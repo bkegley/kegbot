@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  postgres:
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=postgres
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@kegbot.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+      - PGADMIN_LISTEN_PORT=8080
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    volumes:
+      - db-admin:/var/lib/pgadmin
+
+  server:
+    build:
+      target: install
+    environment:
+      - PORT=4040
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=admin
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+    user: 1000:1000
+    ports:
+      - 4040:4040
+    command: yarn workspace @kegbot/server run develop
+    volumes:
+      - ./:/app
+
+volumes:
+  db:
+  db-admin:
