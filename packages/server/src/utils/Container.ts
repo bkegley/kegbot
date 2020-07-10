@@ -1,4 +1,5 @@
 import { BaseModule } from "./BaseModule";
+import { IModule, IModuleConstructor } from "./IModule";
 
 export interface IContainer {
   bind<T>(inter: Symbol, init: T): void;
@@ -11,7 +12,7 @@ export interface IResolver {
 
 export class Container implements IContainer, IResolver {
   private registry = new Map();
-  private moduleRegistry = new Array<typeof BaseModule>();
+  private moduleRegistry = new Array<IModuleConstructor>();
 
   public bind<T>(inter: Symbol, init: T | ((resolver: IResolver) => T)) {
     if (typeof init === "function") {
@@ -29,13 +30,13 @@ export class Container implements IContainer, IResolver {
     return thing;
   }
 
-  public registerModule(module: typeof BaseModule) {
+  public registerModule(module: IModuleConstructor) {
     this.moduleRegistry.push(module);
     return this;
   }
 
   public build() {
-    this.moduleRegistry.forEach((module) => {
+    this.moduleRegistry.forEach(module => {
       new module(this).init();
     });
   }

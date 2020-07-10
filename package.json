@@ -1,10 +1,8 @@
 {
-  "name": "kegbot",
-  "version": "0.0.1",
-  "author": "Bryan Kegley <hi@bryankegley.me>",
-  "license": "MIT",
-  "workspaces": [
-    "packages/**"
-  ],
-  "private": true
+    "name": "kegbot",
+    "version": "0.0.1",
+    "author": "Bryan Kegley <hi@bryankegley.me>",
+    "license": "MIT",
+    "workspaces": ["packages/**"],
+    "private": true
 }

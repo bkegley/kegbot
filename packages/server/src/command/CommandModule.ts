@@ -3,17 +3,21 @@ import { TYPES } from "../abstract";
 import { CommandHandler } from "./CommandHandler";
 import { ICommand } from "./ICommand";
 import { HiCommand } from "./HiCommand";
+import { ByeCommand } from "./ByeCommand";
+import { IModule } from "../utils/IModule";
+import { ShoutoutCommand } from "./ShoutoutCommand";
 
-export class CommandModule extends BaseModule {
+export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
 
   init() {
     this.container.bind<CommandHandler>(
       TYPES.CommandHandler,
-      (resolver) =>
+      resolver =>
         new CommandHandler(
           this.commandRegistry,
-          resolver.resolve(TYPES.CommandService)
+          resolver.resolve(TYPES.CommandService),
+          resolver.resolve(TYPES.TwitchClient)
         )
     );
 
@@ -22,6 +26,19 @@ export class CommandModule extends BaseModule {
       () =>
         new HiCommand(
           this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.UserService)
+        )
+    );
+    this.commandRegistry.set(
+      "!bye",
+      () => new ByeCommand(this.container.resolve(TYPES.UserService))
+    );
+    this.commandRegistry.set(
+      "!so",
+      () =>
+        new ShoutoutCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.TwitchClient),
           this.container.resolve(TYPES.UserService)
         )
     );

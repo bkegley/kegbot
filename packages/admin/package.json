@@ -1,0 +1,17 @@
+{
+    "name": "@kegbot/admin",
+    "version": "0.0.1",
+    "license": "MIT",
+    "scripts": {
+        "develop": "gatsby develop",
+        "clean": "gatsby clean",
+        "build": "gatsby build",
+        "serve": "gatsby serve"
+    },
+    "dependencies": {
+        "gatsby": "^2.23.17",
+        "gatsby-plugin-typescript": "^2.4.12",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1"
+    }
+}

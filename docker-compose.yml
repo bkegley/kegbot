@@ -3,7 +3,6 @@ version: "3.8"
 services:
   postgres:
     image: postgres
-    restart: always
 
   server:
     build:
@@ -11,3 +10,8 @@ services:
       dockerfile: ./packages/server/Dockerfile
     depends_on:
       - postgres
+
+  admin:
+    build:
+      context: .
+      dockerfile: ./packages/admin/Dockerfile

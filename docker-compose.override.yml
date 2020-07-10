@@ -14,7 +14,6 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    restart: always
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@kegbot.com
       - PGADMIN_DEFAULT_PASSWORD=password
@@ -42,6 +41,16 @@ services:
     volumes:
       - ./:/app
 
+  admin:
+    build:
+      target: install
+    user: 1000:1000
+    ports:
+      - 8001:8001
+    command: yarn workspace @kegbot/admin run develop -p 8001 -H 0.0.0.0
+    volumes:
+      - ./:/app
+    
 volumes:
   db:
   db-admin:
