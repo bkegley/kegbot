@@ -15,7 +15,7 @@ export class ServiceRegistry {
   registerServices() {
     this.container.bind<IUserService>(
       TYPES.UserService,
-      (resolver) =>
+      resolver =>
         new UserService(
           resolver.resolve(TYPES.EntityManager),
           resolver.resolve(TYPES.IOServer)
@@ -24,7 +24,11 @@ export class ServiceRegistry {
 
     this.container.bind<ICommandService>(
       TYPES.CommandService,
-      (resolver) => new CommandService(resolver.resolve(TYPES.EntityManager))
+      resolver =>
+        new CommandService(
+          resolver.resolve(TYPES.EntityManager),
+          resolver.resolve(TYPES.IOServer)
+        )
     );
   }
 }

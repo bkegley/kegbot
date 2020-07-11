@@ -22,7 +22,7 @@ export class CreateCommand implements ICommand {
       const [_, command, ...response] = message.split(" ");
       await this.commandService.create({
         command,
-        response: response.join(" "),
+        response: response.join(" ")
       });
     }
   }

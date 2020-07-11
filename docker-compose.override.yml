@@ -46,8 +46,8 @@ services:
       target: install
     user: 1000:1000
     ports:
-      - 5000:5000
-    command: yarn workspace @kegbot/admin run dev
+      - 8001:8000
+    command: yarn workspace @kegbot/admin run develop -H 0.0.0.0
     volumes:
       - ./:/app
     

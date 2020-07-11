@@ -20,8 +20,10 @@ export class ShoutoutCommand implements ICommand {
     message: string,
     self: boolean
   ) {
-    if (user.username && (user.mod || user.badges?.broadcaster)) {
-      const [command, channelName] = message.split(" ");
+    const [command, channelName] = message.split(" ");
+    if (user.username === channelName.toLowerCase()) {
+      this.twitchClient.say("bjkegley", "Seriously?");
+    } else if (user.username && (user.mod || user.badges?.broadcaster)) {
       this.twitchClient.say(
         "bjkegley",
         `Let's give a warm hoot an' holla to https://twitch.tv/${channelName}`
