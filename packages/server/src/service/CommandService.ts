@@ -22,7 +22,7 @@ export class CommandService extends BaseService implements ICommandService {
 
   async create(input: { command: string; response: string; modOnly: boolean }) {
     const command = new Command();
-    command.command = input.command;
+    command.command = input.command.trim().replace(" ", "-");
     command.response = input.response;
     command.modOnly = input.modOnly;
     await this.manager.save(command);
