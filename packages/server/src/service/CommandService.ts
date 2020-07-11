@@ -20,10 +20,11 @@ export class CommandService extends BaseService implements ICommandService {
     return foundCommand;
   }
 
-  async create(input: { command: string; response: string }) {
+  async create(input: { command: string; response: string; modOnly: boolean }) {
     const command = new Command();
     command.command = input.command;
     command.response = input.response;
+    command.modOnly = input.modOnly;
     await this.manager.save(command);
     this.io.emit("command-created", command);
 
@@ -32,7 +33,7 @@ export class CommandService extends BaseService implements ICommandService {
 
   async updateCommand(
     id: string,
-    input: { command: string; response: string }
+    input: { command: string; response: string; modOnly: boolean }
   ) {
     const res = await this.manager
       .createQueryBuilder(Command, "command")

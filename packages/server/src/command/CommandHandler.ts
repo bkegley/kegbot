@@ -34,7 +34,9 @@ export class CommandHandler implements ICommandHandler {
         console.log(`${commandText} not found`);
         return;
       }
-      this.twitchClient.say("bjkegley", command.response);
+      if (!command.modOnly || user.mod || user.badges?.broadcaster) {
+        this.twitchClient.say("bjkegley", command.response);
+      }
       return;
     }
 

@@ -39,7 +39,6 @@ const initialState: CommandState = {
 };
 
 const reducer = (state: CommandState, action: CommandAction) => {
-  console.log({ action });
   switch (action.type) {
     case FetchCommandActionTypes.FETCH_INIT: {
       return {
@@ -97,7 +96,6 @@ export const Commands = () => {
 
   React.useEffect(() => {
     socket.on("command-created", (data: ICommand) => {
-      console.log({ commandCreated: data });
       dispatch({
         type: CommandEventActionTypes.COMMAND_CREATED,
         payload: data

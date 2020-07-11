@@ -10,4 +10,7 @@ export class Command {
 
   @Column()
   response!: string;
+
+  @Column({ default: true })
+  modOnly!: boolean;
 }
