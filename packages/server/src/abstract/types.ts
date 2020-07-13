@@ -13,5 +13,6 @@ export const TYPES = {
 
   // services
   CommandService: Symbol("CommandService"),
-  UserService: Symbol("UserService"),
+  PhoneService: Symbol("PhoneService"),
+  UserService: Symbol("UserService")
 };

@@ -4,6 +4,8 @@ import { TYPES } from "../abstract";
 import { UserService } from "./UserService";
 import { ICommandService } from "./ICommandService";
 import { CommandService } from "./CommandService";
+import { IPhoneService } from "./IPhoneService";
+import { PhoneService } from "./PhoneService";
 
 export class ServiceRegistry {
   private container: Container;
@@ -29,6 +31,13 @@ export class ServiceRegistry {
           resolver.resolve(TYPES.EntityManager),
           resolver.resolve(TYPES.IOServer)
         )
+    );
+    this.container.bind<IPhoneService>(
+      TYPES.PhoneService,
+      new PhoneService(
+        this.container.resolve(TYPES.EntityManager),
+        this.container.resolve(TYPES.IOServer)
+      )
     );
   }
 }

@@ -71,7 +71,6 @@ class Server {
 
     twitchClient.on("message", (channel, user, message, self) => {
       this.io.emit("message", message);
-      console.log({ channel, message, user, self });
       if (message[0] === "!") {
         this.container
           .resolve<CommandHandler>(TYPES.CommandHandler)

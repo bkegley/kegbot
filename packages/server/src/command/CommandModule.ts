@@ -6,6 +6,8 @@ import { HiCommand } from "./HiCommand";
 import { ByeCommand } from "./ByeCommand";
 import { IModule } from "../utils/IModule";
 import { ShoutoutCommand } from "./ShoutoutCommand";
+import { AnswerCommand } from "./AnswerCommand";
+import { StartCommand } from "./StartCommand";
 
 export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
@@ -29,10 +31,12 @@ export class CommandModule extends BaseModule implements IModule {
           this.container.resolve(TYPES.UserService)
         )
     );
+
     this.commandRegistry.set(
       "!bye",
       () => new ByeCommand(this.container.resolve(TYPES.UserService))
     );
+
     this.commandRegistry.set(
       "!so",
       () =>
@@ -42,5 +46,20 @@ export class CommandModule extends BaseModule implements IModule {
           this.container.resolve(TYPES.UserService)
         )
     );
+
+    this.commandRegistry.set(
+      "!start",
+      () =>
+        new StartCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.PhoneService)
+        )
+    );
+
+    this.commandRegistry.set(
+      "!answer",
+      () => new AnswerCommand(this.container.resolve(TYPES.PhoneService))
+    );
+    console.log(this.commandRegistry.entries());
   }
 }
