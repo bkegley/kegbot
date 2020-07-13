@@ -15,35 +15,42 @@ export const CreateNewCommand = () => {
   };
 
   return (
-    <div>
-      <div>
-        <Label htmlFor="command">Command</Label>
-        <Input
-          id="command"
-          value={command}
-          onChange={e => setCommand(e.currentTarget.value)}
-        />
-      </div>
-      <div>
-        <Label htmlFor="response">Response</Label>
-        <Input
-          id="response"
-          value={response}
-          onChange={e => setResponse(e.currentTarget.value)}
-        />
-      </div>
-      <div>
-        <Label htmlFor="modOnly">Mod Only?</Label>
-        <input
-          type="checkbox"
-          checked={modOnly}
-          onClick={() => setModOnly(!modOnly)}
-        />
-      </div>
-      <div>
-        <Button type="button" onClick={handleSubmit}>
-          Create
-        </Button>
+    <div className="w-full max-w-sm mx-auto">
+      <div className="space-y-4">
+        <div>
+          <Label htmlFor="command">Command</Label>
+          <Input
+            type="text"
+            id="command"
+            value={command}
+            onChange={e => setCommand(e.currentTarget.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="response">Response</Label>
+          <Input
+            type="text"
+            id="response"
+            value={response}
+            onChange={e => setResponse(e.currentTarget.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="modOnly">Mod Only?</Label>
+          <input
+            type="checkbox"
+            checked={modOnly}
+            onClick={() => setModOnly(!modOnly)}
+          />
+        </div>
+        <div></div>
+        <div className="flex flex-col items-end mt-6 md:flex-row md:justify-end md:items-center md:space-x-4 space-y-4">
+          <div className="md:mt-4 md:ml-4 md:order-">
+            <Button type="button" onClick={handleSubmit}>
+              Update
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
