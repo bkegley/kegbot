@@ -6,6 +6,8 @@ import { ICommandService } from "./ICommandService";
 import { CommandService } from "./CommandService";
 import { IPhoneService } from "./IPhoneService";
 import { PhoneService } from "./PhoneService";
+import { IDeliverySessionService } from "./IDeliverySession";
+import { DeliverySessionService } from "./DeliverySession";
 
 export class ServiceRegistry {
   private container: Container;
@@ -32,12 +34,23 @@ export class ServiceRegistry {
           resolver.resolve(TYPES.IOServer)
         )
     );
+
     this.container.bind<IPhoneService>(
       TYPES.PhoneService,
       new PhoneService(
         this.container.resolve(TYPES.EntityManager),
         this.container.resolve(TYPES.IOServer)
       )
+    );
+
+    this.container.bind<IDeliverySessionService>(
+      TYPES.DeliverySessionService,
+      () =>
+        new DeliverySessionService(
+          this.container.resolve(TYPES.EntityManager),
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.UserService)
+        )
     );
   }
 }

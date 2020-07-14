@@ -58,7 +58,11 @@ export class CommandModule extends BaseModule implements IModule {
 
     this.commandRegistry.set(
       "!answer",
-      () => new AnswerCommand(this.container.resolve(TYPES.PhoneService))
+      () =>
+        new AnswerCommand(
+          this.container.resolve(TYPES.PhoneService),
+          this.container.resolve(TYPES.DeliverySessionService)
+        )
     );
     console.log(this.commandRegistry.entries());
   }

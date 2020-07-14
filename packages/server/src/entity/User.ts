@@ -1,10 +1,14 @@
-import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
+import { DeliverySession } from "./DeliverySession";
 
 @Entity()
 export class User {
   @PrimaryColumn()
   username!: string;
 
-  @Column()
+  @Column({ default: "" })
   greeting!: string;
+
+  @OneToMany(type => DeliverySession, deliverySession => deliverySession.user)
+  deliverySessions!: DeliverySession[];
 }

@@ -1,12 +1,17 @@
 import { ICommand } from "./ICommand";
-import { IPhoneService } from "../service";
+import { IPhoneService, IDeliverySessionService } from "../service";
 import { ChatUserstate } from "tmi.js";
 
 export class AnswerCommand implements ICommand {
   private readonly phoneService: IPhoneService;
+  private readonly deliverySessionService: IDeliverySessionService;
 
-  constructor(phoneService: IPhoneService) {
+  constructor(
+    phoneService: IPhoneService,
+    deliverySessionService: IDeliverySessionService
+  ) {
     this.phoneService = phoneService;
+    this.deliverySessionService = deliverySessionService;
   }
 
   public async handleCommand(
@@ -23,6 +28,7 @@ export class AnswerCommand implements ICommand {
       );
       if (this.phoneService.isRinging) {
         this.phoneService.answer(user.username);
+        this.deliverySessionService.createForUser(user.username);
       }
     }
   }

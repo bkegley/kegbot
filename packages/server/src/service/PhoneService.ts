@@ -29,6 +29,8 @@ export class PhoneService extends BaseService implements IPhoneService {
   }
 
   restart() {
-    this.init();
+    if (!this.isRinging) {
+      this.init();
+    }
   }
 }

@@ -29,7 +29,7 @@ export class UserService extends BaseService implements IUserService {
 
     const newUser = new User();
     newUser.username = username;
-    this.manager.save(newUser);
+    await this.manager.save(newUser);
     return newUser;
   }
 }
