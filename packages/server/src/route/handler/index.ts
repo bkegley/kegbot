@@ -4,3 +4,7 @@ export * from "./CommandUpdate";
 export * from "./GetUserById";
 export * from "./IRouteHandler";
 export * from "./ListUsers";
+export * from "./VehicleList";
+export * from "./VehicleCreate";
+export * from "./VehicleGetById";
+export * from "./VehicleUpdate";

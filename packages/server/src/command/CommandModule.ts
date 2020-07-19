@@ -8,6 +8,8 @@ import { IModule } from "../utils/IModule";
 import { ShoutoutCommand } from "./ShoutoutCommand";
 import { AnswerCommand } from "./AnswerCommand";
 import { StartCommand } from "./StartCommand";
+import { PewCreateCommand } from "./PewCreate";
+import { PewPewCommand } from "./PewPew";
 
 export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
@@ -64,6 +66,25 @@ export class CommandModule extends BaseModule implements IModule {
           this.container.resolve(TYPES.DeliverySessionService)
         )
     );
-    console.log(this.commandRegistry.entries());
+
+    this.commandRegistry.set(
+      "!pewcreate",
+      () =>
+        new PewCreateCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.TwitchClient),
+          this.container.resolve(TYPES.PewService)
+        )
+    );
+
+    this.commandRegistry.set(
+      "!pewpew",
+      () =>
+        new PewPewCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.TwitchClient),
+          this.container.resolve(TYPES.PewService)
+        )
+    );
   }
 }

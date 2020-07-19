@@ -8,6 +8,10 @@ import { IPhoneService } from "./IPhoneService";
 import { PhoneService } from "./PhoneService";
 import { IDeliverySessionService } from "./IDeliverySession";
 import { DeliverySessionService } from "./DeliverySession";
+import { IPewService } from "./IPewService";
+import { PewService } from "./PewService";
+import { IVehicleService } from "./IVehicleService";
+import { VehicleService } from "./VehicleService";
 
 export class ServiceRegistry {
   private container: Container;
@@ -35,6 +39,15 @@ export class ServiceRegistry {
         )
     );
 
+    this.container.bind<IPewService>(
+      TYPES.PewService,
+      resolver =>
+        new PewService(
+          resolver.resolve(TYPES.EntityManager),
+          resolver.resolve(TYPES.IOServer)
+        )
+    );
+
     this.container.bind<IPhoneService>(
       TYPES.PhoneService,
       new PhoneService(
@@ -50,6 +63,15 @@ export class ServiceRegistry {
           this.container.resolve(TYPES.EntityManager),
           this.container.resolve(TYPES.IOServer),
           this.container.resolve(TYPES.UserService)
+        )
+    );
+
+    this.container.bind<IVehicleService>(
+      TYPES.VehicleService,
+      resolver =>
+        new VehicleService(
+          resolver.resolve(TYPES.EntityManager),
+          resolver.resolve(TYPES.IOServer)
         )
     );
   }
