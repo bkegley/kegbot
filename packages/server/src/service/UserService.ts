@@ -1,7 +1,7 @@
 import { User } from "../entity/User";
 import { BaseService } from "../abstract";
 import { IUserService } from "./IUserService";
-import { EntityManager, getRepository } from "typeorm";
+import { EntityManager } from "typeorm";
 import { Server } from "socket.io";
 import { IVehicleService } from "./IVehicleService";
 import { UserVehicle } from "../entity/UserVehicle";
@@ -89,6 +89,18 @@ export class UserService extends BaseService implements IUserService {
     this.manager.save(user);
 
     return purchasedVehicle;
+  }
+
+  public async getUserVehicleByName(username: string, vehicleName: string) {
+    const vehicle = await this.manager
+      .createQueryBuilder(UserVehicle, "userVehicle")
+      .innerJoinAndSelect("userVehicle.user", "user")
+      .innerJoinAndSelect("userVehicle.vehicle", "vehicle")
+      .where("user.username = :username", { username })
+      .andWhere("vehicle.name = :name", { name: vehicleName })
+      .getOne();
+
+    return vehicle;
   }
 
   public async purchasePew(username: string, pewName: string) {

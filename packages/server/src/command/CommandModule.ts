@@ -8,10 +8,10 @@ import { IModule } from "../utils/IModule";
 import { ShoutoutCommand } from "./ShoutoutCommand";
 import { AnswerCommand } from "./AnswerCommand";
 import { StartCommand } from "./StartCommand";
-import { PewCreateCommand } from "./PewCreate";
 import { PewPewCommand } from "./PewPewCommand";
 import { PurchaseCommand } from "./PurchaseCommand";
 import { GiveCommand } from "./GiveCommand";
+import { ChooseCruiseCommand } from "./ChooseCruise";
 
 export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
@@ -77,6 +77,15 @@ export class CommandModule extends BaseModule implements IModule {
           this.container.resolve(TYPES.TwitchClient),
           this.container.resolve(TYPES.UserService),
           this.container.resolve(TYPES.PewService)
+        )
+    );
+
+    this.commandRegistry.set(
+      "!choosecruise",
+      () =>
+        new ChooseCruiseCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.UserService)
         )
     );
 

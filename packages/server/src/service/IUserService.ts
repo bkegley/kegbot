@@ -9,6 +9,10 @@ export interface IUserService {
   saveUserGreeting(username: string, greeting: string): Promise<User>;
   give(username: string, amount: number): Promise<User>;
   purchaseVehicle(username: string, vehicleName: string): Promise<UserVehicle>;
+  getUserVehicleByName(
+    username: string,
+    vehicleName: string
+  ): Promise<UserVehicle | undefined>;
   purchasePew(username: string, pewName: string): Promise<any>;
   getUserPewByName(
     username: string,
