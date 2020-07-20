@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { UserVehicle } from "./UserVehicle";
 
 @Entity()
 export class Vehicle {
@@ -7,6 +8,9 @@ export class Vehicle {
 
   @Column({ unique: true })
   name!: string;
+
+  @OneToMany(type => UserVehicle, userVehicle => userVehicle.vehicle)
+  userVehicles!: UserVehicle[];
 
   @Column({ default: 0 })
   cost!: number;

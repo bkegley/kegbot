@@ -26,7 +26,8 @@ export class ServiceRegistry {
       resolver =>
         new UserService(
           resolver.resolve(TYPES.EntityManager),
-          resolver.resolve(TYPES.IOServer)
+          resolver.resolve(TYPES.IOServer),
+          resolver.resolve(TYPES.VehicleService)
         )
     );
 

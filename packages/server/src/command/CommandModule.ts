@@ -10,6 +10,7 @@ import { AnswerCommand } from "./AnswerCommand";
 import { StartCommand } from "./StartCommand";
 import { PewCreateCommand } from "./PewCreate";
 import { PewPewCommand } from "./PewPew";
+import { PurchaseCommand } from "./PurchaseCommand";
 
 export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
@@ -68,9 +69,9 @@ export class CommandModule extends BaseModule implements IModule {
     );
 
     this.commandRegistry.set(
-      "!pewcreate",
+      "!pewpew",
       () =>
-        new PewCreateCommand(
+        new PewPewCommand(
           this.container.resolve(TYPES.IOServer),
           this.container.resolve(TYPES.TwitchClient),
           this.container.resolve(TYPES.PewService)
@@ -78,12 +79,12 @@ export class CommandModule extends BaseModule implements IModule {
     );
 
     this.commandRegistry.set(
-      "!pewpew",
+      "!purchase",
       () =>
-        new PewPewCommand(
+        new PurchaseCommand(
           this.container.resolve(TYPES.IOServer),
           this.container.resolve(TYPES.TwitchClient),
-          this.container.resolve(TYPES.PewService)
+          this.container.resolve(TYPES.UserService)
         )
     );
   }
