@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { UserPew } from "./UserPew";
 
 @Entity()
 export class Pew {
@@ -7,6 +8,9 @@ export class Pew {
 
   @Column({ unique: true })
   name!: string;
+
+  @OneToMany(type => UserPew, userPew => userPew.pew)
+  userPews!: UserPew[];
 
   @Column({ default: 0 })
   cost!: number;

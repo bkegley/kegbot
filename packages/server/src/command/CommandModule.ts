@@ -11,6 +11,7 @@ import { StartCommand } from "./StartCommand";
 import { PewCreateCommand } from "./PewCreate";
 import { PewPewCommand } from "./PewPew";
 import { PurchaseCommand } from "./PurchaseCommand";
+import { GiveCommand } from "./GiveCommand";
 
 export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
@@ -75,6 +76,15 @@ export class CommandModule extends BaseModule implements IModule {
           this.container.resolve(TYPES.IOServer),
           this.container.resolve(TYPES.TwitchClient),
           this.container.resolve(TYPES.PewService)
+        )
+    );
+
+    this.commandRegistry.set(
+      "!give",
+      () =>
+        new GiveCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.UserService)
         )
     );
 
