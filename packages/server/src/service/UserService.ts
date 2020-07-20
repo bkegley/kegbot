@@ -1,12 +1,13 @@
 import { User } from "../entity/User";
 import { BaseService } from "../abstract";
 import { IUserService } from "./IUserService";
-import { EntityManager } from "typeorm";
+import { EntityManager, getRepository } from "typeorm";
 import { Server } from "socket.io";
 import { IVehicleService } from "./IVehicleService";
 import { UserVehicle } from "../entity/UserVehicle";
 import { IPewService } from "./IPewService";
 import { UserPew } from "../entity/UserPew";
+import { Pew } from "../entity/Pew";
 
 export class UserService extends BaseService implements IUserService {
   private vehicleService: IVehicleService;
@@ -113,5 +114,21 @@ export class UserService extends BaseService implements IUserService {
     this.manager.save(user);
 
     return purchasedPew;
+  }
+
+  public async getUserPewByName(username: string, pewName: string) {
+    const pew = await this.manager
+      .createQueryBuilder(UserPew, "userPew")
+      .innerJoinAndSelect("userPew.user", "user")
+      .innerJoinAndSelect("userPew.pew", "pew")
+      .where("user.username = :username", { username })
+      .andWhere("pew.name = :name", { name: pewName })
+      .getOne();
+
+    if (pew) {
+      this.manager.delete(UserPew, pew);
+    }
+
+    return pew;
   }
 }

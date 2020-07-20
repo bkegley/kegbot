@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import { Phone } from "./phone";
 import { DeliverySession } from "./delivery";
 import { VehicleRouter } from "./vehicles";
+import { Pew } from "./pew";
 
 export const XStreamRouter = () => {
   return (
@@ -13,6 +14,7 @@ export const XStreamRouter = () => {
       <Route path="/xstream/phone">{() => <Phone />}</Route>
       <Route path="/xstream/delivery">{() => <DeliverySession />}</Route>
       <Route path="/xstream/vehicles">{() => <VehicleRouter />}</Route>
+      <Route path="/xstream/pew">{() => <Pew />}</Route>
     </Switch>
   );
 };

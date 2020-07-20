@@ -23,6 +23,7 @@ export class ServiceRegistry {
   registerServices() {
     this.container.bind<IUserService>(
       TYPES.UserService,
+      // @ts-ignore
       resolver =>
         new UserService(
           resolver.resolve(TYPES.EntityManager),

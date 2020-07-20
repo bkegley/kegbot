@@ -9,7 +9,7 @@ import { ShoutoutCommand } from "./ShoutoutCommand";
 import { AnswerCommand } from "./AnswerCommand";
 import { StartCommand } from "./StartCommand";
 import { PewCreateCommand } from "./PewCreate";
-import { PewPewCommand } from "./PewPew";
+import { PewPewCommand } from "./PewPewCommand";
 import { PurchaseCommand } from "./PurchaseCommand";
 import { GiveCommand } from "./GiveCommand";
 
@@ -75,6 +75,7 @@ export class CommandModule extends BaseModule implements IModule {
         new PewPewCommand(
           this.container.resolve(TYPES.IOServer),
           this.container.resolve(TYPES.TwitchClient),
+          this.container.resolve(TYPES.UserService),
           this.container.resolve(TYPES.PewService)
         )
     );

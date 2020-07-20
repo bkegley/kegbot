@@ -1,16 +1,24 @@
 import { ICommand } from "./ICommand";
 import { Server } from "socket.io";
 import { ChatUserstate, Client } from "tmi.js";
+import { IUserService } from "../service";
 import { IPewService } from "../service/IPewService";
 
 export class PewPewCommand implements ICommand {
   private io: Server;
   private twitchClient: Client;
+  private userService: IUserService;
   private pewService: IPewService;
 
-  constructor(io: Server, twitchClient: Client, pewService: IPewService) {
+  constructor(
+    io: Server,
+    twitchClient: Client,
+    userService: IUserService,
+    pewService: IPewService
+  ) {
     this.io = io;
     this.twitchClient = twitchClient;
+    this.userService = userService;
     this.pewService = pewService;
   }
 
@@ -20,14 +28,12 @@ export class PewPewCommand implements ICommand {
     message: string,
     self: boolean
   ) {
-    const [_, name] = message.split(" ");
-    const pew = await this.pewService.getByName(name);
-    if (pew) {
-      this.io.emit("pew-pewed", pew);
-      this.twitchClient.say(
-        "bjkegley",
-        `${user.username} pewed the pew ${pew.name}`
-      );
+    if (user.username) {
+      const [_, name] = message.split(" ");
+      const pew = await this.userService.getUserPewByName(user.username, name);
+      if (pew) {
+        this.io.emit("pewpew-pewed", pew);
+      }
     }
   }
 }
