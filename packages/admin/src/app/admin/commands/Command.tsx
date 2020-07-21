@@ -1,5 +1,5 @@
 import React from "react";
-import { Label, Input, Button, Checkbox, TextArea } from "../../components";
+import { Label, Input, Button, Checkbox, TextArea } from "../../../components";
 import { ICommand } from "./ICommand";
 
 export interface CommandProps {

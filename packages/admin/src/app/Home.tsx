@@ -5,7 +5,7 @@ export const Home = () => {
   return (
     <div>
       <h1>Home</h1>
-      <Link to="/commands">Commands</Link>
+      <Link to="/admin/commands">Commands</Link>
       <iframe
         frameBorder="0"
         scrolling="no"

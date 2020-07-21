@@ -1,6 +1,6 @@
 import React from "react";
 import { CreateNewCommand } from "./CreateNew";
-import { StyledLink } from "../../components";
+import { StyledLink } from "../../../components";
 
 export const CreateNewPage = () => {
   return (

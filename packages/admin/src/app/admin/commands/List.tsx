@@ -1,9 +1,7 @@
 import React from "react";
-import { useSocket } from "../../hooks/useSocket";
+import { useSocket } from "../../../hooks/useSocket";
 import { Command } from "./Command";
-import { Button } from "../../components";
-import { StyledLink } from "../../components";
-import { Link } from "react-router-dom";
+import { Button, StyledLink } from "../../../components";
 
 enum FetchCommandActionTypes {
   FETCH_INIT = "FETCH_INIT",
@@ -152,7 +150,7 @@ export const CommandList = () => {
         >
           Refresh
         </Button>
-        <StyledLink to="/commands/create">Create New</StyledLink>
+        <StyledLink to="/admin/commands/create">Create New</StyledLink>
       </div>
 
       {!state.data ? (

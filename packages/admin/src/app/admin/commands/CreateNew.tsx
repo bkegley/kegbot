@@ -1,5 +1,5 @@
 import React from "react";
-import { Label, Input, Button } from "../../components";
+import { Label, Input, Button } from "../../../components";
 
 export const CreateNewCommand = () => {
   const [command, setCommand] = React.useState("");

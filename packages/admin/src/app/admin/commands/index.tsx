@@ -6,10 +6,10 @@ import { CreateNewPage } from "./CreateNewPage";
 export const CommandRouter = () => {
   return (
     <Switch>
-      <Route exact path="/commands">
+      <Route exact path="/admin/commands">
         {() => <CommandList />}
       </Route>
-      <Route path="/commands/create">{() => <CreateNewPage />}</Route>
+      <Route path="/admin/commands/create">{() => <CreateNewPage />}</Route>
     </Switch>
   );
 };
