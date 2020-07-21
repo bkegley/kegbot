@@ -3,6 +3,7 @@ import { useSocket } from "../../hooks/useSocket";
 import { Command } from "./Command";
 import { Button } from "../../components";
 import { StyledLink } from "../../components";
+import { Link } from "react-router-dom";
 
 enum FetchCommandActionTypes {
   FETCH_INIT = "FETCH_INIT",
@@ -142,7 +143,7 @@ export const CommandList = () => {
           Chat Commands
         </h1>
       </div>
-      <div className="w-full text-right">
+      <div className="w-full text-right space-x-4">
         <Button
           variant="secondary"
           type="Button"
@@ -151,6 +152,7 @@ export const CommandList = () => {
         >
           Refresh
         </Button>
+        <StyledLink to="/commands/create">Create New</StyledLink>
       </div>
 
       {!state.data ? (
@@ -158,15 +160,12 @@ export const CommandList = () => {
           <p>Looks like there isn't data yet...</p>
         </div>
       ) : (
-        <div className="flex flex-col flex-wrap max-w-full md:flex-row space-y-4 md:space-y-0">
+        <div className="flex flex-col flex-wrap items-start max-w-full md:flex-row space-y-4 md:space-y-0">
           {state.data.map(command => {
             return <Command command={command} key={command.id} />;
           })}
         </div>
       )}
-      <div className="my-6 text-right">
-        <StyledLink to="/commands/create">Create New</StyledLink>
-      </div>
     </div>
   );
 };

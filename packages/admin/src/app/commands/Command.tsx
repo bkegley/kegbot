@@ -1,5 +1,5 @@
 import React from "react";
-import { Label, Input, Button, Checkbox } from "../../components";
+import { Label, Input, Button, Checkbox, TextArea } from "../../components";
 import { ICommand } from "./ICommand";
 
 export interface CommandProps {
@@ -58,7 +58,7 @@ export const Command = ({ command }: CommandProps) => {
         </div>
         <div>
           <Label htmlFor={`response-${command.id}`}>Response</Label>
-          <Input
+          <TextArea
             type="text"
             id={`response-${command.id}`}
             value={response}
