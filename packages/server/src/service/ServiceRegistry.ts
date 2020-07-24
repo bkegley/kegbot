@@ -12,6 +12,8 @@ import { IPewService } from "./IPewService";
 import { PewService } from "./PewService";
 import { IVehicleService } from "./IVehicleService";
 import { VehicleService } from "./VehicleService";
+import { OrderService } from "./OrderService";
+import { IOrderService } from "./IOrderService";
 
 export class ServiceRegistry {
   private container: Container;
@@ -73,6 +75,15 @@ export class ServiceRegistry {
       TYPES.VehicleService,
       resolver =>
         new VehicleService(
+          resolver.resolve(TYPES.EntityManager),
+          resolver.resolve(TYPES.IOServer)
+        )
+    );
+
+    this.container.bind<IOrderService>(
+      TYPES.OrderService,
+      resolver =>
+        new OrderService(
           resolver.resolve(TYPES.EntityManager),
           resolver.resolve(TYPES.IOServer)
         )

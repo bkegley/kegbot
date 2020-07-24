@@ -6,7 +6,15 @@ export const XStream = () => {
   return (
     <div>
       <h1>XStream</h1>
-      <Link to={`${match.url}/vehicles`}>Vehicles</Link>
+      <div>
+        <Link to={`${match.url}/vehicles`}>Vehicles</Link>
+      </div>
+      <div>
+        <Link to={`${match.url}/pews`}>Pews</Link>
+      </div>
+      <div>
+        <Link to={`${match.url}/orders`}>Orders</Link>
+      </div>
     </div>
   );
 };

@@ -13,6 +13,10 @@ import { CommandCreateRouteHandler } from "./handler/CommandCreate";
 import { CommandListRouteHandler } from "./handler/CommandList";
 import { CommandDeleteRouteHandler } from "./handler/CommandDelete";
 import { VehicleCreateRouteHandler } from "./handler/VehicleCreate";
+import { PewSuggestionListRouteHandler } from "./handler/PewSuggestionList";
+import { OrderListRouteHandler } from "./handler/OrderList";
+import { PewCreateRouteHandler } from "./handler/PewCreate";
+import { PewSuggestionModerateRouteHandler } from "./handler/PewSuggestionModerateRouteHandler";
 
 export class RouteModule extends BaseModule {
   init() {
@@ -54,6 +58,31 @@ export class RouteModule extends BaseModule {
       ).handle(req, res)
     );
 
+    app.get("/orders", (req: Request, res) =>
+      new OrderListRouteHandler(
+        this.container.resolve(TYPES.OrderService)
+      ).handle(req, res)
+    );
+
+    app.get("/pew-suggestions", (req: Request, res) =>
+      new PewSuggestionListRouteHandler(
+        this.container.resolve(TYPES.PewService)
+      ).handle(req, res)
+    );
+
+    app.patch(
+      "/pew-suggestions/:id/moderate",
+      (req: Request<{ id: string }>, res) =>
+        new PewSuggestionModerateRouteHandler(
+          this.container.resolve(TYPES.PewService)
+        ).handle(req, res)
+    );
+
+    app.post("/pews", (req: Request, res) =>
+      new PewCreateRouteHandler(
+        this.container.resolve(TYPES.PewService)
+      ).handle(req, res)
+    );
     app.get("/xstream/vehicles", (req: Request, res) =>
       new VehicleListRouteHandler(
         this.container.resolve(TYPES.VehicleService)

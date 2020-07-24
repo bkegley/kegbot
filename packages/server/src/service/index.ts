@@ -5,3 +5,7 @@ export * from "./IUserService";
 export * from "./PhoneService";
 export * from "./ServiceRegistry";
 export * from "./UserService";
+export * from "./PewService";
+export * from "./IPewService";
+export * from "./IOrderService";
+export * from "./OrderService";
