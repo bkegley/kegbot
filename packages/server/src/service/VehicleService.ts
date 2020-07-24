@@ -1,12 +1,24 @@
 import { BaseService } from "../abstract";
 import { Vehicle } from "../entity/Vehicle";
 import { IVehicleService } from "./IVehicleService";
+import { UserVehicle } from "../entity/UserVehicle";
 
 export class VehicleService extends BaseService implements IVehicleService {
   async listVehicles() {
     const vehicles = await this.manager
       .createQueryBuilder(Vehicle, "vehicle")
       .getMany();
+    return vehicles;
+  }
+
+  async listUserVehiclesByUsername(username: string) {
+    const vehicles = await this.manager
+      .createQueryBuilder(UserVehicle, "userVehicle")
+      .innerJoinAndSelect("userVehicle.user", "user")
+      .innerJoinAndSelect("userVehicle.vehicle", "vehicle")
+      .where("user.username = :username", { username })
+      .getMany();
+
     return vehicles;
   }
 

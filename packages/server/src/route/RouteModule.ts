@@ -17,6 +17,7 @@ import { PewSuggestionListRouteHandler } from "./handler/PewSuggestionList";
 import { OrderListRouteHandler } from "./handler/OrderList";
 import { PewCreateRouteHandler } from "./handler/PewCreate";
 import { PewSuggestionModerateRouteHandler } from "./handler/PewSuggestionModerateRouteHandler";
+import { ListUserVehiclesByUsernameRouteHandler } from "./handler/ListUserVehiclesByUsername";
 
 export class RouteModule extends BaseModule {
   init() {
@@ -32,6 +33,14 @@ export class RouteModule extends BaseModule {
       new GetUserByIdRouteHandler(
         this.container.resolve(TYPES.UserService)
       ).handle(req, res)
+    );
+
+    app.get(
+      "/users/:username/vehicles",
+      (req: Request<{ username: string }>, res) =>
+        new ListUserVehiclesByUsernameRouteHandler(
+          this.container.resolve(TYPES.VehicleService)
+        ).handle(req, res)
     );
 
     app.get("/commands", (req, res) =>

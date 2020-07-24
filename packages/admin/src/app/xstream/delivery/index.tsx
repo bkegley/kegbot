@@ -1,39 +1,21 @@
 import React from "react";
-import { useSocket } from "../../../hooks/useSocket";
+import { DeliveryRoute } from "./DeliveryRoute";
+import { GameStats } from "./GameStats";
+import { VehicleSelection } from "./VehicleSelection";
 
-interface IDeliverySession {
-  id: number;
-  user: number;
-}
-
-export const DeliverySession = () => {
-  const socket = useSocket();
-  const [
-    deliverySession,
-    setDeliverySession
-  ] = React.useState<IDeliverySession | null>(null);
-
-  const [vehicle, setVehicle] = React.useState<any | null>(null);
-
-  React.useEffect(() => {
-    socket.on(
-      "delivery-session-created",
-      (deliverySession: IDeliverySession) => {
-        setDeliverySession(deliverySession);
-      }
-    );
-
-    socket.on("cruise-choosed", vehicle => {
-      setVehicle(vehicle);
-    });
-  }, []);
-
+export const XStreamDelivery = () => {
   return (
     <div>
-      <h1>This is the delivery session</h1>
-      <pre>{JSON.stringify({ deliverySession }, null, 2)}</pre>
-      <h1>This is our vehicle</h1>
-      <pre>{JSON.stringify(vehicle, null, 2)}</pre>
+      <div className="flex flex-col items-end">
+        <h1>this is over here</h1>
+      </div>
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <GameStats />
+        <VehicleSelection />
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 p-20 bg-blue-300">
+        <DeliveryRoute />
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Input, Button, Label, TextArea } from "../../../../components";
-import { IPewSuggestion } from "./IPew";
+import { IPewSuggestion } from "../../../../interfaces/IPewSuggestion";
 
 interface PewSuggestionUpdateFormProps {
   pew: IPewSuggestion;

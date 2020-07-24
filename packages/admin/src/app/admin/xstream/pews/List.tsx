@@ -1,6 +1,6 @@
 import React from "react";
 import { PewSuggestionUpdateForm } from "./UpdateForm";
-import { IPewSuggestion, PewSuggestionStatus } from "./IPew";
+import { IPewSuggestion, PewSuggestionStatus } from "../../../../interfaces";
 import { useSocket } from "../../../../hooks/useSocket";
 import { Button } from "../../../../components";
 
