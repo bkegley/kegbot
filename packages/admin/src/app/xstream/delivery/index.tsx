@@ -2,12 +2,13 @@ import React from "react";
 import { DeliveryRoute } from "./DeliveryRoute";
 import { GameStats } from "./GameStats";
 import { VehicleSelection } from "./VehicleSelection";
+import { PewQueue } from "./PewQueue";
 
 export const XStreamDelivery = () => {
   return (
     <div>
-      <div className="flex flex-col items-end">
-        <h1>this is over here</h1>
+      <div className="absolute top-0 right-0">
+        <PewQueue />
       </div>
       <div className="flex flex-col items-center justify-center min-h-screen">
         <GameStats />

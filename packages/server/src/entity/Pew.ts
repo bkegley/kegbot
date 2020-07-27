@@ -14,4 +14,7 @@ export class Pew {
 
   @Column({ default: 0 })
   cost!: number;
+
+  @Column({ default: true })
+  expendable!: boolean;
 }

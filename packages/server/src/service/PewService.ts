@@ -19,6 +19,14 @@ export class PewService extends BaseService implements IPewService {
     return pewSuggestions;
   }
 
+  async getById(id: string) {
+    const pew = await this.manager
+      .createQueryBuilder(Pew, "pew")
+      .where("id = :id", { id })
+      .getOne();
+    return pew;
+  }
+
   async getByName(name: string) {
     const pew = await this.manager
       .createQueryBuilder(Pew, "pew")

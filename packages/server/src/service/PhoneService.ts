@@ -6,15 +6,23 @@ export class PhoneService extends BaseService implements IPhoneService {
   private ringingInterval!: NodeJS.Timeout;
   private ringingTimeout!: NodeJS.Timeout;
 
-  init() {
+  private baseInterval = 5000;
+  private baseRingLength = 4000;
+
+  private currentPhoneFrequencyMultiplier = 1;
+
+  init(phoneFrequencyMultiplier?: number) {
+    if (phoneFrequencyMultiplier) {
+      this.currentPhoneFrequencyMultiplier = phoneFrequencyMultiplier;
+    }
     this.ringingInterval = setInterval(() => {
       this.io.emit("phone-ringing", true);
       this.isRinging = true;
       this.ringingTimeout = setTimeout(() => {
         this.io.emit("phone-ringing", false);
         this.isRinging = false;
-      }, 4000);
-    }, 5000);
+      }, this.baseRingLength * this.currentPhoneFrequencyMultiplier);
+    }, this.baseInterval * this.currentPhoneFrequencyMultiplier);
   }
 
   answer(username: string) {
@@ -29,7 +37,7 @@ export class PhoneService extends BaseService implements IPhoneService {
 
   restart() {
     if (!this.isRinging) {
-      this.init();
+      this.init(this.currentPhoneFrequencyMultiplier);
     }
   }
 }

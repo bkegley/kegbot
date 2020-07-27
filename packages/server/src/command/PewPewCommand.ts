@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import { ChatUserstate, Client } from "tmi.js";
 import { IUserService } from "../service";
 import { IPewService } from "../service/IPewService";
+import crypto from "crypto";
 
 export class PewPewCommand implements ICommand {
   private io: Server;
@@ -32,7 +33,8 @@ export class PewPewCommand implements ICommand {
       const [_, name] = message.split(" ");
       const pew = await this.userService.getUserPewByName(user.username, name);
       if (pew) {
-        this.io.emit("pewpew-pewed", pew);
+        const uuid = crypto.randomBytes(6).toString("hex");
+        this.io.emit("pewpew-pewed", { ...pew, uuid });
       }
     }
   }

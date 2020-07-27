@@ -6,6 +6,7 @@ export interface IPewService {
   listPewSuggestions(params: {
     status: string[] | undefined;
   }): Promise<PewSuggestion[] | undefined>;
+  getById(id: string): Promise<Pew | undefined>;
   getByName(name: string): Promise<Pew | undefined>;
   createSuggestion(
     username: string,

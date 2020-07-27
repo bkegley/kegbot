@@ -18,6 +18,10 @@ import { OrderListRouteHandler } from "./handler/OrderList";
 import { PewCreateRouteHandler } from "./handler/PewCreate";
 import { PewSuggestionModerateRouteHandler } from "./handler/PewSuggestionModerateRouteHandler";
 import { ListUserVehiclesByUsernameRouteHandler } from "./handler/ListUserVehiclesByUsername";
+import { PewListRouteHandler } from "./handler/PewList";
+import { PewUpdateByIdRouteHandler } from "./handler/PewUpdateById";
+import { PewDeleteRouteHandler } from "./handler/PewDelete";
+import { PewGetByIdRouteHandler } from "./handler/PewGetById";
 
 export class RouteModule extends BaseModule {
   init() {
@@ -87,11 +91,37 @@ export class RouteModule extends BaseModule {
         ).handle(req, res)
     );
 
+    app.get("/pews", (req: Request, res) =>
+      new PewListRouteHandler(this.container.resolve(TYPES.PewService)).handle(
+        req,
+        res
+      )
+    );
+
+    app.get("/pews/:id", (req: Request<{ id: string }>, res) =>
+      new PewGetByIdRouteHandler(
+        this.container.resolve(TYPES.PewService)
+      ).handle(req, res)
+    );
+
     app.post("/pews", (req: Request, res) =>
       new PewCreateRouteHandler(
         this.container.resolve(TYPES.PewService)
       ).handle(req, res)
     );
+
+    app.patch("/pews/:id", (req: Request<{ id: string }>, res) =>
+      new PewUpdateByIdRouteHandler(
+        this.container.resolve(TYPES.PewService)
+      ).handle(req, res)
+    );
+
+    app.delete("/pews/:id", (req: Request<{ id: string }>, res) =>
+      new PewDeleteRouteHandler(
+        this.container.resolve(TYPES.PewService)
+      ).handle(req, res)
+    );
+
     app.get("/xstream/vehicles", (req: Request, res) =>
       new VehicleListRouteHandler(
         this.container.resolve(TYPES.VehicleService)

@@ -137,7 +137,7 @@ export class UserService extends BaseService implements IUserService {
       .andWhere("pew.name = :name", { name: pewName })
       .getOne();
 
-    if (pew) {
+    if (pew && pew.pew.expendable) {
       this.manager.delete(UserPew, pew);
     }
 
