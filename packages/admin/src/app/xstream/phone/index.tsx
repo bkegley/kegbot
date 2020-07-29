@@ -32,11 +32,6 @@ export const Phone = () => {
           <PhoneIcon className="w-12 h-12" />
         )}
       </div>
-      {deliverySession ? (
-        <div className="p-5 ml-20 bg-green-300">
-          <pre>{JSON.stringify(deliverySession, null, 2)}</pre>
-        </div>
-      ) : null}
     </div>
   );
 };

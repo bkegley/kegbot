@@ -7,7 +7,7 @@ import { PewQueue } from "./PewQueue";
 export const XStreamDelivery = () => {
   return (
     <div>
-      <div className="absolute top-0 right-0">
+      <div className="absolute top-0 right-0 w-1/4">
         <PewQueue />
       </div>
       <div className="flex flex-col items-center justify-center min-h-screen">
