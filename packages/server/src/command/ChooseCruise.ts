@@ -24,9 +24,6 @@ export class ChooseCruiseCommand implements ICommand {
         user.username,
         name
       );
-
-      console.log({ vehicle });
-
       this.io.emit("cruise-choosed", vehicle);
     }
   }

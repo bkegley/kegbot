@@ -3,10 +3,14 @@ import { DeliveryRoute } from "./DeliveryRoute";
 import { GameStats } from "./GameStats";
 import { VehicleSelection } from "./VehicleSelection";
 import { PewQueue } from "./PewQueue";
+import { PewClue } from "./PewClue";
 
 export const XStreamDelivery = () => {
   return (
     <div>
+      <div className="absolute top-0 left-0 mt-40">
+        <PewClue />
+      </div>
       <div className="absolute top-0 right-0 w-1/4">
         <PewQueue />
       </div>

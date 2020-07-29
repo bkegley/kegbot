@@ -14,6 +14,7 @@ import { GiveCommand } from "./GiveCommand";
 import { ChooseCruiseCommand } from "./ChooseCruise";
 import { PewDoCommand } from "./PewDoCommand";
 import { OrderCommand } from "./OrderCommand";
+import { PewClueCommand } from "./PewClueCommand";
 
 export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
@@ -68,6 +69,15 @@ export class CommandModule extends BaseModule implements IModule {
         new AnswerCommand(
           this.container.resolve(TYPES.PhoneService),
           this.container.resolve(TYPES.DeliverySessionService)
+        )
+    );
+
+    this.commandRegistry.set(
+      "!pewclue",
+      () =>
+        new PewClueCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.TwitchClient)
         )
     );
 
