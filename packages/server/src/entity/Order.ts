@@ -1,17 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { User } from "./User";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { DeliverySession } from "./DeliverySession";
 
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ default: false })
-  approved!: boolean;
-
-  @ManyToOne(type => User, user => user.orders)
-  user!: User;
-
   @Column()
-  description!: string;
+  text!: string;
+
+  @OneToMany(type => DeliverySession, deliverySession => deliverySession.order)
+  deliverySessions!: DeliverySession[];
 }

@@ -1,25 +1,25 @@
 import { BaseService } from "../abstract";
 import { IOrderService } from "./IOrderService";
-import { Order } from "../entity/Order";
+import { OrderSuggestion } from "../entity/OrderSuggestion";
 
 export class OrderService extends BaseService implements IOrderService {
-  public async listOrders() {
+  public async listOrderSuggestions() {
     const orders = await this.manager
-      .createQueryBuilder(Order, "order")
+      .createQueryBuilder(OrderSuggestion, "order")
       .getMany();
     return orders;
   }
   public async createSuggestion(
     username: string,
-    input: Omit<Order, "id" | "approved">
+    input: Omit<OrderSuggestion, "id" | "approved">
   ) {
-    const orderSuggestion = new Order();
+    const orderSuggestion = new OrderSuggestion();
 
     // @ts-ignore
     orderSuggestion.user = username;
 
-    ((Object.keys(input) as unknown) as Array<keyof Order>).forEach(
-      (key: keyof Order) => {
+    ((Object.keys(input) as unknown) as Array<keyof OrderSuggestion>).forEach(
+      (key: keyof OrderSuggestion) => {
         // @ts-ignore
         orderSuggestion[key] = input[key];
       }

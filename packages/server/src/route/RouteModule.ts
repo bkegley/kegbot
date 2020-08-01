@@ -14,7 +14,7 @@ import { CommandListRouteHandler } from "./handler/CommandList";
 import { CommandDeleteRouteHandler } from "./handler/CommandDelete";
 import { VehicleCreateRouteHandler } from "./handler/VehicleCreate";
 import { PewSuggestionListRouteHandler } from "./handler/PewSuggestionList";
-import { OrderListRouteHandler } from "./handler/OrderList";
+import { OrderSuggestionListRouteHandler } from "./handler/OrderSuggestionList";
 import { PewCreateRouteHandler } from "./handler/PewCreate";
 import { PewSuggestionModerateRouteHandler } from "./handler/PewSuggestionModerateRouteHandler";
 import { ListUserVehiclesByUsernameRouteHandler } from "./handler/ListUserVehiclesByUsername";
@@ -22,6 +22,7 @@ import { PewListRouteHandler } from "./handler/PewList";
 import { PewUpdateByIdRouteHandler } from "./handler/PewUpdateById";
 import { PewDeleteRouteHandler } from "./handler/PewDelete";
 import { PewGetByIdRouteHandler } from "./handler/PewGetById";
+import { GameStartRouteHandler } from "./handler/GameStart";
 
 export class RouteModule extends BaseModule {
   init() {
@@ -71,8 +72,14 @@ export class RouteModule extends BaseModule {
       ).handle(req, res)
     );
 
+    app.post(
+      "/game",
+      (req: Request, res) =>
+        new GameStartRouteHandler(this.container.resolve(TYPES.GameService))
+    );
+
     app.get("/orders", (req: Request, res) =>
-      new OrderListRouteHandler(
+      new OrderSuggestionListRouteHandler(
         this.container.resolve(TYPES.OrderService)
       ).handle(req, res)
     );

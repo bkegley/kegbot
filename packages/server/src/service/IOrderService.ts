@@ -1,9 +1,9 @@
-import { Order } from "../entity/Order";
+import { OrderSuggestion } from "../entity/OrderSuggestion";
 
 export interface IOrderService {
-  listOrders(): Promise<Order[] | undefined>;
+  listOrderSuggestions(): Promise<OrderSuggestion[] | undefined>;
   createSuggestion(
     username: string,
-    input: Omit<Order, "id" | "approved" | "user">
-  ): Promise<Order | undefined>;
+    input: Omit<OrderSuggestion, "id" | "approved" | "user">
+  ): Promise<OrderSuggestion | undefined>;
 }

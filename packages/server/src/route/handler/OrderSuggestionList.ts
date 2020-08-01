@@ -2,7 +2,7 @@ import { IRouteHandler } from "./IRouteHandler";
 import { IOrderService } from "../../service";
 import { Request, Response } from "express";
 
-export class OrderListRouteHandler implements IRouteHandler {
+export class OrderSuggestionListRouteHandler implements IRouteHandler {
   private orderService: IOrderService;
 
   constructor(orderService: IOrderService) {
@@ -10,7 +10,7 @@ export class OrderListRouteHandler implements IRouteHandler {
   }
 
   async handle(req: Request, res: Response) {
-    const orders = await this.orderService.listOrders();
+    const orders = await this.orderService.listOrderSuggestions();
     res.json(orders);
   }
 }
