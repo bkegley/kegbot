@@ -9,10 +9,44 @@ export interface PewProps {
   onPewed(pew: IUserPew): void;
 }
 
-const animationVariant: Variants = {
-  enter: () => {
+const pewContainer: Variants = {
+  initial: () => {
     return {
-      width: 0
+      y: 50,
+      opacity: 0,
+      transition: {
+        y: { stiffness: 1000 }
+      }
+    };
+  },
+  center: () => {
+    return {
+      y: 0,
+      opacity: 1,
+      transition: {
+        y: { stiffness: 1000, velocity: -100 }
+      }
+    };
+  },
+  exit: () => {
+    return {
+      x: -50,
+      opacity: 0,
+      transition: {
+        y: { stiffness: 1000 },
+        duration: 0.2
+      }
+    };
+  }
+};
+
+const pewTimer: Variants = {
+  initial: () => {
+    return {
+      width: 0,
+      transition: {
+        delay: 0.2
+      }
     };
   },
   center: timeoutDelay => {
@@ -20,22 +54,6 @@ const animationVariant: Variants = {
       width: "100%",
       transition: {
         duration: timeoutDelay / 1000
-      }
-    };
-  }
-};
-
-const pewVariant: Variants = {
-  center: () => {
-    return {
-      scale: 1
-    };
-  },
-  exit: () => {
-    return {
-      scale: 0,
-      transition: {
-        duration: 0.2
       }
     };
   }
@@ -53,7 +71,8 @@ export const Pew = ({ pew, isActive, timeoutDelay, onPewed }: PewProps) => {
   return (
     <motion.div
       key={`${pew.uuid}-1`}
-      variants={pewVariant}
+      variants={pewContainer}
+      initial="initial"
       animate="center"
       exit="exit"
       className={`${
@@ -63,8 +82,8 @@ export const Pew = ({ pew, isActive, timeoutDelay, onPewed }: PewProps) => {
       {isActive ? (
         <motion.div
           key={`${pew.uuid}-2`}
-          variants={animationVariant}
-          initial="enter"
+          variants={pewTimer}
+          initial="initial"
           animate="center"
           custom={timeoutDelay}
           className="absolute top-0 left-0 right-0 h-full bg-green-600"

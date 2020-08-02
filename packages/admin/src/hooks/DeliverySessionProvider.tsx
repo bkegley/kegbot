@@ -57,7 +57,9 @@ const reducer = (state: IState, action: IAction) => {
     }
 
     case ActionType.PEW_PEWED: {
-      console.log({ pew: action.payload });
+      if (!state.vehicle) {
+        return state;
+      }
       return {
         ...state,
         vehicle: {
