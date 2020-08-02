@@ -111,6 +111,14 @@ export const DeliverySessionProvider = ({
       });
     };
     socket.on("cruise-choosed", cruiseChoosedHandler);
+
+    return () => {
+      socket.removeListener(
+        "delivery-session-created",
+        deliverySessionCreatedHandler
+      );
+      socket.removeListener("cruise-choosed", cruiseChoosedHandler);
+    };
   }, []);
 
   const value = React.useMemo(() => {
