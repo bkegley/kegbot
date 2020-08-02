@@ -3,9 +3,11 @@ import { useSocket } from "../../../hooks/useSocket";
 import { Pew } from "./Pew";
 import { IUserPew } from "../../../interfaces";
 import { AnimatePresence } from "framer-motion";
+import { useDeliverySession } from "../../../hooks/useDeliverySession";
 
 export const PewQueue = () => {
   const socket = useSocket();
+  const { pewPew } = useDeliverySession();
   const [pews, setPews] = React.useState<IUserPew[]>([]);
   const timeoutDelay = 5000;
 
@@ -39,8 +41,9 @@ export const PewQueue = () => {
               key={pew.uuid}
               pew={pew}
               isActive={index === 0}
-              onPewed={() => {
+              onPewed={pew => {
                 setPews(old => old.slice(1));
+                pewPew(pew);
               }}
               timeoutDelay={timeoutDelay}
             />

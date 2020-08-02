@@ -2,8 +2,8 @@ import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
 import { DeliverySession } from "./DeliverySession";
 import { UserVehicle } from "./UserVehicle";
 import { UserPew } from "./UserPew";
-import { Order } from "./Order";
 import { PewSuggestion } from "./PewSuggestion";
+import { OrderSuggestion } from "./OrderSuggestion";
 
 @Entity()
 export class User {
@@ -28,6 +28,6 @@ export class User {
   @OneToMany(type => PewSuggestion, pewSuggestion => pewSuggestion.user)
   pewSuggestions!: PewSuggestion[];
 
-  @OneToMany(type => Order, order => order.user)
-  orders!: Order[];
+  @OneToMany(type => OrderSuggestion, orderSuggestion => orderSuggestion.user)
+  orderSuggestions!: OrderSuggestion[];
 }

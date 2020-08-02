@@ -1,5 +1,7 @@
 export * from "./DeliverySession";
+export * from "./GameService";
 export * from "./IDeliverySession";
+export * from "./IGameService";
 export * from "./IOrderService";
 export * from "./IPewService";
 export * from "./IPhoneService";

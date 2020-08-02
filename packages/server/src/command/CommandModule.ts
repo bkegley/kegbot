@@ -106,7 +106,8 @@ export class CommandModule extends BaseModule implements IModule {
       () =>
         new ChooseCruiseCommand(
           this.container.resolve(TYPES.IOServer),
-          this.container.resolve(TYPES.UserService)
+          this.container.resolve(TYPES.UserService),
+          this.container.resolve(TYPES.DeliverySessionService)
         )
     );
 
