@@ -1,4 +1,5 @@
 import React from "react";
+import { DeliverySessionProvider } from "../../../hooks/DeliverySessionProvider";
 import { DeliveryRoute } from "./DeliveryRoute";
 import { GameStats } from "./GameStats";
 import { VehicleSelection } from "./VehicleSelection";
@@ -7,7 +8,7 @@ import { PewClue } from "./PewClue";
 
 export const XStreamDelivery = () => {
   return (
-    <div>
+    <DeliverySessionProvider>
       <div className="absolute top-0 left-0 mt-40">
         <PewClue />
       </div>
@@ -21,6 +22,6 @@ export const XStreamDelivery = () => {
       <div className="absolute bottom-0 left-0 right-0 p-20 bg-blue-300">
         <DeliveryRoute />
       </div>
-    </div>
+    </DeliverySessionProvider>
   );
 };
