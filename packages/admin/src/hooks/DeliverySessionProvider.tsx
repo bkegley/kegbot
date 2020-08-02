@@ -85,20 +85,20 @@ export const DeliverySessionProvider = ({
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   React.useEffect(() => {
-    socket.on(
-      "delivery-session-created",
-      (deliverySession: IDeliverySession) => {
-        dispatch({
-          type: ActionType.DELIVERY_SESSION_CREATED,
-          payload: {
-            id: deliverySession.id,
-            user: deliverySession.user
-          }
-        });
-      }
-    );
+    const deliverySessionCreatedHandler = (
+      deliverySession: IDeliverySession
+    ) => {
+      dispatch({
+        type: ActionType.DELIVERY_SESSION_CREATED,
+        payload: {
+          id: deliverySession.id,
+          user: deliverySession.user
+        }
+      });
+    };
+    socket.on("delivery-session-created", deliverySessionCreatedHandler);
 
-    socket.on("cruise-choosed", (userVehicle: IUserVehicle) => {
+    const cruiseChoosedHandler = (userVehicle: IUserVehicle) => {
       dispatch({
         type: ActionType.VEHICLE_SELECTED,
         payload: {
@@ -109,7 +109,8 @@ export const DeliverySessionProvider = ({
           speed: userVehicle.vehicle.baseSpeed
         }
       });
-    });
+    };
+    socket.on("cruise-choosed", cruiseChoosedHandler);
   }, []);
 
   const value = React.useMemo(() => {

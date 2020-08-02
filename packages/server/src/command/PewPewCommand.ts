@@ -34,7 +34,7 @@ export class PewPewCommand implements ICommand {
       const pew = await this.userService.getUserPewByName(user.username, name);
       if (pew) {
         const uuid = crypto.randomBytes(6).toString("hex");
-        this.io.emit("pewpew-pewed", { ...pew, uuid });
+        this.io.emit("pewpew-queued", { ...pew, uuid });
       }
     }
   }

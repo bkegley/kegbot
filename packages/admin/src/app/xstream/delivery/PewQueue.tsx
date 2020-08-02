@@ -19,11 +19,11 @@ export const PewQueue = () => {
       setPews(newData);
     };
 
-    socket.on("pewpew-pewed", pewPewedHandler);
+    socket.on("pewpew-queued", pewPewedHandler);
 
     return () => {
       isCurrent = false;
-      socket.removeListener("pewpew-pewed", pewPewedHandler);
+      socket.removeListener("pewpew-queued", pewPewedHandler);
     };
   }, [pews]);
 
