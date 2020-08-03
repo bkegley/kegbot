@@ -18,6 +18,7 @@ import { PewClueCommand } from "./PewClueCommand";
 
 export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
+  private aliasRegistry = new Map<string, string>();
 
   init() {
     this.container.bind<CommandHandler>(
@@ -25,10 +26,18 @@ export class CommandModule extends BaseModule implements IModule {
       resolver =>
         new CommandHandler(
           this.commandRegistry,
+          this.aliasRegistry,
           resolver.resolve(TYPES.CommandService),
           resolver.resolve(TYPES.TwitchClient)
         )
     );
+
+    this.aliasRegistry.set("!pp", "!pewpew");
+    this.aliasRegistry.set("!help", "!pewclue");
+    this.aliasRegistry.set("!cc", "!choosecruise");
+    this.aliasRegistry.set("!cruisechoose", "!choosecruise");
+    this.aliasRegistry.set("!give", "!pewaccrue");
+    this.aliasRegistry.set("!pewsspew", "!pewaccrue");
 
     this.commandRegistry.set(
       "!hi",
@@ -112,7 +121,7 @@ export class CommandModule extends BaseModule implements IModule {
     );
 
     this.commandRegistry.set(
-      "!give",
+      "!pewaccrue",
       () =>
         new GiveCommand(
           this.container.resolve(TYPES.IOServer),
