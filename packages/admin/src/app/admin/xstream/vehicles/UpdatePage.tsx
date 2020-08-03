@@ -1,5 +1,5 @@
 import React from "react";
-import { IVehicle } from "./IVehicle";
+import { IVehicle } from "../../../../interfaces";
 import { Formik, Form, Field } from "formik";
 
 interface UpdateVehiclePageProps {

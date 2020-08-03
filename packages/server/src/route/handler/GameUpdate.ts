@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { IRouteHandler } from "./IRouteHandler";
 import { IGameService } from "../../service";
 
-export class GameStartRouteHandler implements IRouteHandler {
+export class GameUpdateRouteHandler implements IRouteHandler {
   private gameService: IGameService;
 
   constructor(gameService: IGameService) {
@@ -10,9 +10,10 @@ export class GameStartRouteHandler implements IRouteHandler {
   }
 
   async handle(req: Request, res: Response) {
-    const game = await this.gameService.startGame(req.body).catch(err => {
+    const game = await this.gameService.setGameOptions(req.body).catch(err => {
       res.status(403).send(err);
     });
+
     res.json(game);
   }
 }

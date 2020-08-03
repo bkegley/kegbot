@@ -23,6 +23,9 @@ import { PewUpdateByIdRouteHandler } from "./handler/PewUpdateById";
 import { PewDeleteRouteHandler } from "./handler/PewDelete";
 import { PewGetByIdRouteHandler } from "./handler/PewGetById";
 import { GameStartRouteHandler } from "./handler/GameStart";
+import { GameStopRouteHandler } from "./handler/GameStop";
+import { GameGetRouteHandler } from "./handler/GameGet";
+import { GameUpdateRouteHandler } from "./handler/GameUpdate";
 
 export class RouteModule extends BaseModule {
   init() {
@@ -72,10 +75,29 @@ export class RouteModule extends BaseModule {
       ).handle(req, res)
     );
 
-    app.post(
-      "/game",
-      (req: Request, res) =>
-        new GameStartRouteHandler(this.container.resolve(TYPES.GameService))
+    app.get("/game", (req, res) =>
+      new GameGetRouteHandler(this.container.resolve(TYPES.GameService)).handle(
+        req,
+        res
+      )
+    );
+
+    app.patch("/game", (req: Request, res) =>
+      new GameUpdateRouteHandler(
+        this.container.resolve(TYPES.GameService)
+      ).handle(req, res)
+    );
+
+    app.post("/game/start", (req: Request, res) =>
+      new GameStartRouteHandler(
+        this.container.resolve(TYPES.GameService)
+      ).handle(req, res)
+    );
+
+    app.post("/game/stop", (req: Request, res) =>
+      new GameStopRouteHandler(
+        this.container.resolve(TYPES.GameService)
+      ).handle(req, res)
     );
 
     app.get("/orders", (req: Request, res) =>

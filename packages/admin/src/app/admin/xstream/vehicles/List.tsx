@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useRouteMatch } from "react-router-dom";
-import { IVehicle } from "./IVehicle";
+import { IVehicle } from "../../../../interfaces";
 
 export const VehicleList = () => {
   const match = useRouteMatch();

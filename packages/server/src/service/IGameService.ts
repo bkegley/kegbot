@@ -1,3 +1,5 @@
+import { DeliverySession } from "../entity/DeliverySession";
+
 export interface GameOptions {
   difficulty: number;
   rewardMultiplier: number;
@@ -5,10 +7,13 @@ export interface GameOptions {
 }
 
 export interface IGame {
-  activeDeliverySession: boolean;
+  options: GameOptions;
+  activeDeliverySession: DeliverySession | undefined;
 }
 
 export interface IGameService {
-  startGame(option: GameOptions): void;
-  getGame(): any;
+  startGame(options: GameOptions): Promise<IGame>;
+  stopGame(): void;
+  getGame(): Promise<IGame | undefined>;
+  setGameOptions(options: GameOptions): Promise<IGame>;
 }

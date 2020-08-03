@@ -18,7 +18,8 @@ export class StartCommand implements ICommand {
     message: string,
     self: boolean
   ) {
-    console.log("starting the phone game!!");
-    this.phoneService.init();
+    if (!this.phoneService.isRinging) {
+      this.phoneService.init();
+    }
   }
 }

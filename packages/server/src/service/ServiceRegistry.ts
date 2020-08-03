@@ -14,6 +14,8 @@ import { IVehicleService } from "./IVehicleService";
 import { VehicleService } from "./VehicleService";
 import { OrderService } from "./OrderService";
 import { IOrderService } from "./IOrderService";
+import { IGameService } from "./IGameService";
+import { GameService } from "./GameService";
 
 export class ServiceRegistry {
   private container: Container;
@@ -58,6 +60,15 @@ export class ServiceRegistry {
       new PhoneService(
         this.container.resolve(TYPES.EntityManager),
         this.container.resolve(TYPES.IOServer)
+      )
+    );
+
+    this.container.bind<IGameService>(
+      TYPES.GameService,
+      new GameService(
+        this.container.resolve(TYPES.EntityManager),
+        this.container.resolve(TYPES.IOServer),
+        this.container.resolve(TYPES.PhoneService)
       )
     );
 
