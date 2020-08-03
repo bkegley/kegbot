@@ -1,60 +1,119 @@
 import React from "react";
-import { Input, Button, Label, TextArea } from "../../../../components";
-import { IPewSuggestion } from "../../../../interfaces/IPewSuggestion";
+import { Input, Label, Checkbox, Button } from "../../../../components";
+import { useRouteMatch, Link, useHistory } from "react-router-dom";
+import { Formik, Form, Field } from "formik";
+import { IPew } from "../../../../interfaces";
 
-interface PewSuggestionUpdateFormProps {
-  pew: IPewSuggestion;
+export interface UpdatePewFormProps {
+  pewId: number;
 }
 
-export const PewSuggestionUpdateForm = ({
-  pew
-}: PewSuggestionUpdateFormProps) => {
-  const { name, description, status } = pew;
+export const UpdatePewForm = ({ pewId }: UpdatePewFormProps) => {
+  const match = useRouteMatch();
+  const history = useHistory();
+  const [pew, setPew] = React.useState<IPew | null>(null);
 
-  const handleModerate = (status: string) => {
-    fetch(`http://localhost:4040/pew-suggestions/${pew.id}/moderate`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status })
-    })
+  React.useEffect(() => {
+    fetch(`http://localhost:4040/pews/${pewId}`)
       .then(res => res.json())
-      .then(console.log)
+      .then(setPew)
+      .catch(console.error);
+  }, [pewId]);
+
+  const handleDelete = () => {
+    fetch(`http://localhost:4040/pews/${pew.id}`, { method: "DELETE" })
+      .then(res => res.json())
+      .then(() => {
+        history.push(match.url.replace(`/${pewId}`, ""));
+      })
       .catch(console.error);
   };
 
+  if (!pew) return null;
+
   return (
-    <div>
-      <div className="space-y-6">
-        <div>
-          <Label htmlFor="name">Name</Label>
-          <Input id="name" value={name} disabled={true} />
-        </div>
-        <div>
-          <Label htmlFor="description">Description</Label>
-          <TextArea id="description" value={description} disabled={true} />
-        </div>
-        <div>
-          <Label htmlFor="status">Status</Label>
-          <Input id="status" value={status} disabled={true} />
-        </div>
+    <div className="w-1/2 mx-auto space-y-4">
+      <div className="text-indigo-600">
+        <Link to={`${match.url.replace(`/${pewId}`, "")}`}>{"<< Go Back"}</Link>{" "}
       </div>
-      <div className="flex items-center mt-8">
-        <div className="order-2 ml-4">
-          <Button variant="primary" onClick={() => handleModerate("approved")}>
-            Approve
-          </Button>
-        </div>
-        <div className="order-1 ml-4">
-          <Button variant="secondary" onClick={() => handleModerate("pending")}>
-            Set Pending
-          </Button>
-        </div>
-        <div>
-          <Button variant="danger" onClick={() => handleModerate("denied")}>
-            Deny
-          </Button>
-        </div>
-      </div>
+      <Formik
+        initialValues={{
+          name: pew.name ?? "",
+          cost: pew.cost ?? 0,
+          expendable: pew.expendable ?? false,
+          healthModification: pew.healthModification ?? 0,
+          speedModification: pew.speedModification ?? 0,
+          speedModificationTimeout: pew.speedModificationTimeout ?? 0
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          fetch(`http://localhost:4040/pews/${pew.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(values)
+          })
+            .then(res => res.json())
+            .then(res => {
+              setSubmitting(false);
+            })
+            .catch(err => {
+              console.error(err);
+              setSubmitting(false);
+            });
+        }}
+      >
+        {({ values, setFieldValue }) => {
+          return (
+            <Form>
+              <div>
+                <Label htmlFor="name">Name</Label>
+                <Field as={Input} name="name" />
+              </div>
+              <div>
+                <Label htmlFor="cost">Cost</Label>
+                <Field as={Input} name="cost" type="number" />
+              </div>
+              <div>
+                <Label htmlFor="expendable">Expendable</Label>
+                <Checkbox
+                  checked={values.expendable}
+                  id="expendable"
+                  onClick={() =>
+                    setFieldValue("expendable", !values.expendable)
+                  }
+                />
+              </div>
+              <div>
+                <Label htmlFor="healthModification">Health Modification</Label>
+                <Field as={Input} name="healthModification" type="number" />
+              </div>
+              <div>
+                <Label htmlFor="speedModification">Speed Modification</Label>
+                <Field as={Input} name="speedModification" type="number" />
+              </div>
+              <div>
+                <Label htmlFor="speedModificationTimeout">
+                  Speed Modification Timeout
+                </Label>
+                <Field
+                  as={Input}
+                  name="speedModificationTimeout"
+                  type="number"
+                />
+              </div>
+              <div className="flex items-center justify-end mt-6">
+                <div className="order-1 ml-4">
+                  <Button type="submit">Submit</Button>
+                </div>
+                <div>
+                  <Button onClick={handleDelete} type="button" variant="danger">
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
     </div>
   );
 };

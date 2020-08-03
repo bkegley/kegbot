@@ -15,13 +15,20 @@ export const PewList = () => {
   }, []);
 
   return (
-    <div>
-      <div className="w-full mr-12 text-right text-indigo-600">
-        <Link to={`${match.url}/create`}>Create New</Link>
+    <div className="w-1/2 mx-auto">
+      <div className="flex items-center w-full mr-12 text-center text-indigo-600">
+        <div className="flex-1 ">
+          <Link to={`${match.url}/create`}>Create New</Link>
+        </div>
+        <div className="flex-1">
+          <Link to={`${match.url}/suggestions`}>Suggestions</Link>
+        </div>
       </div>
-      {pews.map(pew => {
-        return <Pew pew={pew} />;
-      })}
+      <div>
+        {pews.map(pew => {
+          return <Pew pew={pew} />;
+        })}
+      </div>
     </div>
   );
 };

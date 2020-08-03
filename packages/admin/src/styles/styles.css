@@ -3,7 +3,7 @@
 @tailwind components;
 
 .btn {
-  @apply px-4 py-2 tracking-wide uppercase;
+  @apply w-full px-4 py-2 tracking-wide uppercase;
 }
 
 .btn-primary {

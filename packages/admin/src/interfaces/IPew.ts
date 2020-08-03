@@ -4,4 +4,7 @@ export interface IPew {
   name: string;
   cost: number;
   expendable: boolean;
+  healthModification?: number;
+  speedModification?: number;
+  speedModificationTimeout?: number;
 }

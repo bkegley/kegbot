@@ -1,8 +1,8 @@
 import React from "react";
-import { PewSuggestionUpdateForm } from "./UpdateForm";
 import { IPewSuggestion, PewSuggestionStatus } from "../../../../interfaces";
 import { useSocket } from "../../../../hooks/useSocket";
 import { Button } from "../../../../components";
+import { PewSuggestion } from "./PewSuggestion";
 
 export const PewSuggestionList = () => {
   const socket = useSocket();
@@ -39,47 +39,47 @@ export const PewSuggestionList = () => {
   };
 
   return (
-    <div>
-      <select
-        onChange={e =>
-          handleSelection(e.currentTarget.value as PewSuggestionStatus)
-        }
-      >
-        <option value={PewSuggestionStatus.PENDING}>Pending</option>
-        <option value={PewSuggestionStatus.APPROVED}>Approved</option>
-        <option value={PewSuggestionStatus.DENIED}>Denied</option>
-      </select>
-      <div className="flex items-center mt-6 space-x-4">
-        {status.map(stat => {
-          return (
-            <div className="flex items-center justify-between bg-indigo-200 rounded">
-              <span className="px-2 py-1">{stat}</span>
-              <span
-                className="px-2 py-1 text-white bg-indigo-600"
-                onClick={() =>
-                  setStatus(
-                    status.filter(existingStat => existingStat !== stat)
-                  )
-                }
-              >
-                x
-              </span>
-            </div>
-          );
-        })}
+    <div className="w-3/4 mx-auto">
+      <div className="mb-10">
+        <div className="flex items-center justify-end space-x-4">
+          <select
+            onChange={e =>
+              handleSelection(e.currentTarget.value as PewSuggestionStatus)
+            }
+          >
+            <option value={PewSuggestionStatus.PENDING}>Pending</option>
+            <option value={PewSuggestionStatus.APPROVED}>Approved</option>
+            <option value={PewSuggestionStatus.DENIED}>Denied</option>
+          </select>
+          <div className="my-4">
+            <Button onClick={() => setShouldFetch(true)}>Fetch</Button>
+          </div>
+        </div>
+        <div className="flex items-center justify-end mt-6 space-x-4">
+          {status.map(stat => {
+            return (
+              <div className="flex items-center justify-between bg-indigo-200 rounded">
+                <span className="px-2 py-1">{stat}</span>
+                <span
+                  className="px-2 py-1 text-white bg-indigo-600 hover:bg-indigo-900"
+                  onClick={() =>
+                    setStatus(
+                      status.filter(existingStat => existingStat !== stat)
+                    )
+                  }
+                >
+                  x
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
-      <div className="my-4">
-        <Button onClick={() => setShouldFetch(true)}>Fetch</Button>
-      </div>
-      <div className="flex flex-wrap items-center space-x-4">
+      <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
         {pews.map(pew => {
-          return (
-            <div key={pew.id}>
-              <PewSuggestionUpdateForm pew={pew} />
-            </div>
-          );
+          return <PewSuggestion key={pew.id} pewSuggestion={pew} />;
         })}
-      </div>
+      </ul>
     </div>
   );
 };
