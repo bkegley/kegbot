@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import { IVehicle } from "../../../../interfaces";
 import { Formik, Form, Field } from "formik";
 import { Label, Input, Button } from "../../../../components";
@@ -12,6 +12,7 @@ export const UpdateVehicleForm = ({ vehicleId }: UpdateVehicleFormProps) => {
   const [vehicle, setVehicle] = React.useState<IVehicle | null>(null);
 
   const match = useRouteMatch();
+  const history = useHistory();
 
   React.useEffect(() => {
     fetch(`http://localhost:4040/xstream/vehicles/${vehicleId}`)
@@ -20,7 +21,15 @@ export const UpdateVehicleForm = ({ vehicleId }: UpdateVehicleFormProps) => {
       .catch(console.error);
   }, []);
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    fetch(`http://localhost:4040/xstream/vehicles/${vehicleId}`, {
+      method: "DELETE"
+    })
+      .then(res => {
+        history.push(match.url.replace(`/${vehicleId}`, ""));
+      })
+      .catch(console.error);
+  };
 
   if (!vehicle) return null;
 

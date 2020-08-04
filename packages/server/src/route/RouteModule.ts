@@ -26,6 +26,7 @@ import { GameStartRouteHandler } from "./handler/GameStart";
 import { GameStopRouteHandler } from "./handler/GameStop";
 import { GameGetRouteHandler } from "./handler/GameGet";
 import { GameUpdateRouteHandler } from "./handler/GameUpdate";
+import { VehicleDeleteRouteHandler } from "./handler/VehicleDelete";
 
 export class RouteModule extends BaseModule {
   init() {
@@ -171,6 +172,12 @@ export class RouteModule extends BaseModule {
 
     app.post("/xstream/vehicles", (req: Request, res) =>
       new VehicleCreateRouteHandler(
+        this.container.resolve(TYPES.VehicleService)
+      ).handle(req, res)
+    );
+
+    app.delete("/xstream/vehicles/:id", (req: Request<{ id: string }>, res) =>
+      new VehicleDeleteRouteHandler(
         this.container.resolve(TYPES.VehicleService)
       ).handle(req, res)
     );
