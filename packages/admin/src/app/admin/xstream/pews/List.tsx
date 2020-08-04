@@ -15,20 +15,24 @@ export const PewList = () => {
   }, []);
 
   return (
-    <div className="w-1/2 mx-auto">
-      <div className="flex items-center w-full mr-12 text-center text-indigo-600">
-        <div className="flex-1 ">
-          <Link to={`${match.url}/create`}>Create New</Link>
+    <div>
+      <div className="flex items-center justify-end w-full mr-12 text-center text-indigo-600">
+        <div className="order-1 ml-4">
+          <Link className="btn btn-primary" to={`${match.url}/create`}>
+            Create New
+          </Link>
         </div>
-        <div className="flex-1">
-          <Link to={`${match.url}/suggestions`}>Suggestions</Link>
+        <div>
+          <Link className="btn btn-secondary" to={`${match.url}/suggestions`}>
+            Suggestions
+          </Link>
         </div>
       </div>
-      <div>
+      <ul className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
         {pews.map(pew => {
           return <Pew pew={pew} />;
         })}
-      </div>
+      </ul>
     </div>
   );
 };

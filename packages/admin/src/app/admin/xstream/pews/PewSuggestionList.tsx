@@ -39,7 +39,7 @@ export const PewSuggestionList = () => {
   };
 
   return (
-    <div className="w-3/4 mx-auto">
+    <div>
       <div className="mb-10">
         <div className="flex items-center justify-end space-x-4">
           <select

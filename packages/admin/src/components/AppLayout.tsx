@@ -7,9 +7,9 @@ export interface AppLayoutProps {
 
 export const AppLayout = ({ children }: AppLayoutProps) => {
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100">
       <Header />
-      <main className="mt-20">{children}</main>
+      <main className="container py-32 mx-auto">{children}</main>
     </div>
   );
 };

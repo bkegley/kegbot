@@ -8,7 +8,7 @@ export const CreatePew = () => {
   const match = useRouteMatch();
 
   return (
-    <div className="w-1/2 mx-auto space-y-4">
+    <div>
       <div className="text-indigo-600">
         <Link to={`${match.url.replace("/create", "")}`}>{"<< Go Back"}</Link>
       </div>
@@ -40,7 +40,7 @@ export const CreatePew = () => {
       >
         {({ values, setFieldValue }) => {
           return (
-            <Form>
+            <Form className="w-1/2 p-6 mx-auto mt-8 bg-white rounded shadow">
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="name">Name</Label>

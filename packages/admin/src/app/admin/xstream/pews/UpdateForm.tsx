@@ -32,7 +32,7 @@ export const UpdatePewForm = ({ pewId }: UpdatePewFormProps) => {
   if (!pew) return null;
 
   return (
-    <div className="w-1/2 mx-auto space-y-4">
+    <div>
       <div className="text-indigo-600">
         <Link to={`${match.url.replace(`/${pewId}`, "")}`}>{"<< Go Back"}</Link>{" "}
       </div>
@@ -63,7 +63,8 @@ export const UpdatePewForm = ({ pewId }: UpdatePewFormProps) => {
       >
         {({ values, setFieldValue }) => {
           return (
-            <Form>
+            <Form className="w-5/6 p-6 mx-auto mt-8 bg-white rounded shadow lg:w-1/2">
+              {" "}
               <div>
                 <Label htmlFor="name">Name</Label>
                 <Field as={Input} name="name" />
