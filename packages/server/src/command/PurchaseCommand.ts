@@ -23,11 +23,14 @@ export class PurchaseCommand implements ICommand {
     self: boolean
   ) {
     if (user.username) {
-      const [_, type, name] = message.split(" ") as [
+      const [_, type, ...nameWords] = message.split(" ") as [
         string,
         PurchaseTypes,
-        string
+        string[] | undefined
       ];
+
+      if (!nameWords) return;
+      const name = nameWords?.join(" ");
 
       switch (type) {
         case "vehicle": {
@@ -38,6 +41,7 @@ export class PurchaseCommand implements ICommand {
           this.io.emit("purchased-vehicle", {
             vehicle: purchasedVehicle
           });
+          break;
         }
 
         case "pew": {
@@ -48,6 +52,7 @@ export class PurchaseCommand implements ICommand {
           this.io.emit("purchased-pew", {
             pew: purchasedPew
           });
+          break;
         }
       }
     }

