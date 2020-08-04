@@ -3,7 +3,7 @@ import { Input, Label, Checkbox, Button } from "../../../../components";
 import { useHistory, useRouteMatch, Link } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 
-export const CreatePew = () => {
+export const CreatePewForm = () => {
   const history = useHistory();
   const match = useRouteMatch();
 

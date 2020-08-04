@@ -64,7 +64,6 @@ export const UpdatePewForm = ({ pewId }: UpdatePewFormProps) => {
         {({ values, setFieldValue }) => {
           return (
             <Form className="w-5/6 p-6 mx-auto mt-8 bg-white rounded shadow lg:w-1/2">
-              {" "}
               <div>
                 <Label htmlFor="name">Name</Label>
                 <Field as={Input} name="name" />

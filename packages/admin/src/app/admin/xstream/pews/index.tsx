@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { PewList } from "./List";
 import { PewSuggestionList } from "./PewSuggestionList";
-import { CreatePew } from "./CreatePew";
+import { CreatePewForm } from "./CreateForm";
 import { UpdatePewForm } from "./UpdateForm";
 
 export const PewsRouter = () => {
@@ -12,7 +12,7 @@ export const PewsRouter = () => {
       <Route exact path={match.url}>
         {() => <PewList />}
       </Route>
-      <Route path={`${match.url}/create`}>{() => <CreatePew />}</Route>
+      <Route path={`${match.url}/create`}>{() => <CreatePewForm />}</Route>
       <Route path={`${match.url}/suggestions`}>
         {() => <PewSuggestionList />}
       </Route>
