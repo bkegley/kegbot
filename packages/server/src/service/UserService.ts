@@ -91,6 +91,18 @@ export class UserService extends BaseService implements IUserService {
     return purchasedVehicle;
   }
 
+  public async getUserVehicle(username: string, vehicleId: number) {
+    const vehicle = await this.manager
+      .createQueryBuilder(UserVehicle, "userVehicle")
+      .innerJoinAndSelect("userVehicle.user", "user")
+      .innerJoinAndSelect("userVehicle.vehicle", "vehicle")
+      .where("user.username = :username", { username })
+      .andWhere("userVehicle.id = :vehicleId", { vehicleId })
+      .getOne();
+
+    return vehicle;
+  }
+
   public async getUserVehicleByName(username: string, vehicleName: string) {
     const vehicle = await this.manager
       .createQueryBuilder(UserVehicle, "userVehicle")

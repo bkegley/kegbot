@@ -33,11 +33,16 @@ export class ChooseCruiseCommand implements ICommand {
         // TODO: should do something
         return null;
       }
-      const [_, name] = message.split(" ");
-      const vehicle = await this.userService.getUserVehicleByName(
-        user.username,
-        name
-      );
+
+      const [_, idString] = message.split(" ");
+      const id = parseInt(idString);
+
+      if (isNaN(id)) {
+        // TODO: we should do something here
+        return null;
+      }
+
+      const vehicle = await this.userService.getUserVehicle(user.username, id);
 
       if (!vehicle) {
         // TODO: Should throw? an error

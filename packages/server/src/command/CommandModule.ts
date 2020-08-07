@@ -15,6 +15,7 @@ import { ChooseCruiseCommand } from "./ChooseCruise";
 import { PewDoCommand } from "./PewDoCommand";
 import { OrderCommand } from "./OrderCommand";
 import { PewClueCommand } from "./PewClueCommand";
+import { ChoosePeruseCommand } from "./ChoosePeruse";
 
 export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
@@ -117,6 +118,15 @@ export class CommandModule extends BaseModule implements IModule {
           this.container.resolve(TYPES.IOServer),
           this.container.resolve(TYPES.UserService),
           this.container.resolve(TYPES.DeliverySessionService)
+        )
+    );
+
+    this.commandRegistry.set(
+      "!chooseperuse",
+      () =>
+        new ChoosePeruseCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.GameService)
         )
     );
 
