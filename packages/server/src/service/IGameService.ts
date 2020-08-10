@@ -1,7 +1,7 @@
 import { DeliverySession } from "../entity/DeliverySession";
 
 export interface GameOptions {
-  difficulty: number;
+  difficultyModifier: number;
   rewardMultiplier: number;
   phoneFrequencyMultiplier: number;
 }

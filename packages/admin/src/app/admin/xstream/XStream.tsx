@@ -1,19 +1,25 @@
 import React from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
+import { StyledLink } from "../../../components/StyledLink";
 
 export const XStream = () => {
   const match = useRouteMatch();
   return (
     <div>
-      <h1>XStream</h1>
+      <h1 className="text-3xl tracking-wide text-indigo-600 uppercase">
+        XStream
+      </h1>
       <div>
-        <Link to={`${match.url}/vehicles`}>Vehicles</Link>
+        <StyledLink to={`${match.url}/vehicles`}>Vehicles</StyledLink>
       </div>
       <div>
-        <Link to={`${match.url}/pews`}>Pews</Link>
+        <StyledLink to={`${match.url}/pews`}>Pews</StyledLink>
       </div>
       <div>
-        <Link to={`${match.url}/orders`}>Orders</Link>
+        <StyledLink to={`${match.url}/orders`}>Orders</StyledLink>
+      </div>
+      <div>
+        <StyledLink to={`${match.url}/game`}>Game</StyledLink>
       </div>
     </div>
   );

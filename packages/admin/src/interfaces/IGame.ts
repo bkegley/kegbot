@@ -1,7 +1,7 @@
 import { IDeliverySession } from "./index";
 
 export interface IGameOptions {
-  difficulty: number;
+  difficultyModifier: number;
   rewardMultiplier: number;
   phoneFrequencyMultiplier: number;
 }

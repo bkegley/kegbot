@@ -11,6 +11,12 @@ export class DeliverySession {
   @ManyToOne(type => User, user => user.deliverySessions)
   user!: User;
 
+  @Column({ default: 60000 })
+  duration!: number;
+
+  @Column({ default: 250 })
+  reward!: number;
+
   @ManyToOne(type => UserVehicle, userVehicle => userVehicle.deliverySessions)
   userVehicle!: UserVehicle;
 

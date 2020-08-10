@@ -15,10 +15,13 @@ export class PhoneService extends BaseService implements IPhoneService {
     if (phoneFrequencyMultiplier) {
       this.currentPhoneFrequencyMultiplier = phoneFrequencyMultiplier;
     }
+
     this.ringingInterval = setInterval(() => {
+      console.log("phone is going to ring");
       this.io.emit("phone-ringing", true);
       this.isRinging = true;
       this.ringingTimeout = setTimeout(() => {
+        console.log("phone is going to stop ringing");
         this.io.emit("phone-ringing", false);
         this.isRinging = false;
       }, this.baseRingLength * this.currentPhoneFrequencyMultiplier);
@@ -32,6 +35,15 @@ export class PhoneService extends BaseService implements IPhoneService {
       clearInterval(this.ringingInterval);
       console.log(`${username} answered the call`);
       this.io.emit("phone-ringing", false);
+    }
+  }
+
+  reset() {
+    if (this.ringingInterval) {
+      clearInterval(this.ringingInterval);
+    }
+    if (this.ringingTimeout) {
+      clearTimeout(this.ringingTimeout);
     }
   }
 

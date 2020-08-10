@@ -17,8 +17,16 @@ interface DeliverySessionProviderProps {
 
 enum ActionType {
   DELIVERY_SESSION_CREATED = "DELIVERY_SESSION_CREATED",
+  GAME_TICK = "GAME_TICK",
+  GAME_START = "GAME_START",
+  GAME_END = "GAME_END",
   VEHICLE_SELECTED = "VEHICLE_SELECTED",
   PEW_PEWED = "PEW_PEWED"
+}
+
+enum GameEndType {
+  TIMEOUT = "TIMEOUT",
+  VEHICLE_DESTROYED = "VEHICLE_DESTROYED"
 }
 
 interface IAction {
@@ -29,6 +37,9 @@ interface IAction {
 interface IState {
   id: number;
   isActive: boolean;
+  duration: number;
+  gameTime: number;
+  reward: number;
   user: IUser;
   vehicle: {
     id: number;
@@ -41,11 +52,32 @@ interface IState {
 
 const reducer = (state: IState, action: IAction) => {
   switch (action.type) {
+    case ActionType.GAME_TICK: {
+      return {
+        ...state,
+        gameTime: state.gameTime - action.payload
+      };
+    }
+
+    case ActionType.GAME_START: {
+      return {
+        ...state,
+        isActive: true
+      };
+    }
+
+    case ActionType.GAME_END: {
+      return {
+        ...state,
+        isActive: false
+      };
+    }
+
     case ActionType.DELIVERY_SESSION_CREATED: {
       return {
         ...state,
-        id: action.payload.id,
-        user: action.payload.user
+        ...action.payload,
+        gameTime: action.payload.duration
       };
     }
 
@@ -60,6 +92,7 @@ const reducer = (state: IState, action: IAction) => {
       if (!state.vehicle) {
         return state;
       }
+
       return {
         ...state,
         vehicle: {
@@ -73,16 +106,45 @@ const reducer = (state: IState, action: IAction) => {
 
 const initialState: IState = {
   id: null,
+  gameTime: null,
+  duration: null,
+  reward: null,
   isActive: false,
   user: null,
   vehicle: null
 };
+
+const gameTick = 1000;
 
 export const DeliverySessionProvider = ({
   children
 }: DeliverySessionProviderProps) => {
   const socket = useSocket();
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [gameTimerTimeout, setGameTimerTimeout] = React.useState<ReturnType<
+    typeof setInterval
+  > | null>(null);
+
+  console.log({ gameTime: state.gameTime });
+
+  React.useEffect(() => {
+    if (state.isActive) {
+      setGameTimerTimeout(
+        setInterval(() => {
+          dispatch({ type: ActionType.GAME_TICK, payload: gameTick });
+        }, gameTick)
+      );
+    }
+    if (!state.isActive && gameTimerTimeout) {
+      clearTimeout(gameTimerTimeout);
+    }
+  }, [state.isActive]);
+
+  React.useEffect(() => {
+    if (state.gameTime < 0) {
+      dispatch({ type: ActionType.GAME_END, payload: GameEndType.TIMEOUT });
+    }
+  }, [state.gameTime]);
 
   React.useEffect(() => {
     const deliverySessionCreatedHandler = (
@@ -92,6 +154,8 @@ export const DeliverySessionProvider = ({
         type: ActionType.DELIVERY_SESSION_CREATED,
         payload: {
           id: deliverySession.id,
+          reward: deliverySession.reward,
+          duration: deliverySession.duration,
           user: deliverySession.user
         }
       });
@@ -99,6 +163,7 @@ export const DeliverySessionProvider = ({
     socket.on("delivery-session-created", deliverySessionCreatedHandler);
 
     const cruiseChoosedHandler = (userVehicle: IUserVehicle) => {
+      dispatch({ type: ActionType.GAME_START, payload: null });
       dispatch({
         type: ActionType.VEHICLE_SELECTED,
         payload: {
@@ -120,6 +185,8 @@ export const DeliverySessionProvider = ({
       socket.removeListener("cruise-choosed", cruiseChoosedHandler);
     };
   }, []);
+
+  console.log({ state });
 
   const value = React.useMemo(() => {
     return {

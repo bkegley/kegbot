@@ -5,10 +5,14 @@ import { GameStats } from "./GameStats";
 import { VehicleSelection } from "./VehicleSelection";
 import { PewQueue } from "./PewQueue";
 import { PewClue } from "./PewClue";
+import { Phone } from "./Phone";
 
 export const XStreamDelivery = () => {
   return (
     <DeliverySessionProvider>
+      <div className="absolute top-0 left-0 m-10">
+        <Phone />
+      </div>
       <div className="absolute top-0 left-0 mt-40">
         <PewClue />
       </div>

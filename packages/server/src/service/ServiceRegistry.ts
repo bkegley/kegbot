@@ -78,7 +78,8 @@ export class ServiceRegistry {
         new DeliverySessionService(
           this.container.resolve(TYPES.EntityManager),
           this.container.resolve(TYPES.IOServer),
-          this.container.resolve(TYPES.UserService)
+          this.container.resolve(TYPES.UserService),
+          this.container.resolve(TYPES.GameService)
         )
     );
 

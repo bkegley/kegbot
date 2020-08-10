@@ -1,34 +1,23 @@
 import React from "react";
-import { IGame } from "../../../../interfaces/IGame";
-import { UpdateGame } from "./UpdateGame";
+import { Game } from "./Game";
 import { CreateGame } from "./CreateGame";
+import { UpdateGame } from "./UpdateGame";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 
-export const Game = () => {
-  const [loading, setLoading] = React.useState(true);
-  const [game, setGame] = React.useState<IGame | null>(null);
-
-  React.useEffect(() => {
-    fetch("http://localhost:4040/game")
-      .then(res => res.json())
-      .then(res => {
-        setGame(res);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) return null;
+export const GameRouter = () => {
+  const match = useRouteMatch();
 
   return (
-    <div>
-      {game ? (
-        <UpdateGame game={game} setGame={setGame} />
-      ) : (
-        <CreateGame setGame={setGame} />
-      )}
-    </div>
+    <Switch>
+      <Route exact path={match.url}>
+        {() => <Game />}
+      </Route>
+      <Route path={`${match.url}/create`}>
+        {props => <CreateGame {...props} />}
+      </Route>
+      <Route path={`${match.url}/update`}>
+        {props => <UpdateGame {...props} />}
+      </Route>
+    </Switch>
   );
 };

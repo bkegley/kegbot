@@ -32,7 +32,8 @@ export class GameService extends BaseService implements IGameService {
         options,
         activeDeliverySession: undefined
       };
-      this.phoneService.init(this.game?.options?.phoneFrequencyMultiplier);
+
+      this.phoneService.init(options.phoneFrequencyMultiplier);
       this.io.emit("game-started", this.game);
       resolve(this.game);
     });
@@ -44,14 +45,14 @@ export class GameService extends BaseService implements IGameService {
 
   setGameOptions(options: GameOptions) {
     return new Promise<IGame>((resolve, reject) => {
-      if (this.game) {
-        reject("Cannot update a running game - stop game first");
-      }
+      this.phoneService.reset();
 
       this.game = {
         options,
         activeDeliverySession: undefined
       };
+
+      this.phoneService.init(options.phoneFrequencyMultiplier);
 
       resolve(this.game);
     });
