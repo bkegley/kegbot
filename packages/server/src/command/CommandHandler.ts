@@ -36,7 +36,7 @@ export class CommandHandler implements ICommandHandler {
     }
 
     if (!handler) {
-      const command = await this.commandService.getCommand(
+      const command = await this.commandService.getCommandByName(
         commandText.replace("!", "")
       );
       if (!command) {

@@ -27,6 +27,7 @@ import { GameStopRouteHandler } from "./handler/GameStop";
 import { GameGetRouteHandler } from "./handler/GameGet";
 import { GameUpdateRouteHandler } from "./handler/GameUpdate";
 import { VehicleDeleteRouteHandler } from "./handler/VehicleDelete";
+import { CommandGetRouteHandler } from "./handler/CommandGet";
 
 export class RouteModule extends BaseModule {
   init() {
@@ -60,6 +61,12 @@ export class RouteModule extends BaseModule {
 
     app.post("/commands", (req: Request, res) =>
       new CommandCreateRouteHandler(
+        this.container.resolve(TYPES.CommandService)
+      ).handle(req, res)
+    );
+
+    app.get("/commands/:id", (req: Request<{ id: string }>, res) =>
+      new CommandGetRouteHandler(
         this.container.resolve(TYPES.CommandService)
       ).handle(req, res)
     );

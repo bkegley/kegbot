@@ -11,6 +11,7 @@ export const Command = ({ command }: CommandProps) => {
   const [commandText, setCommandText] = React.useState(command.command);
   const [response, setResponse] = React.useState(command.response);
   const [modOnly, setModOnly] = React.useState(command.modOnly);
+  const [aliases, setAliases] = React.useState<string[]>([""]);
 
   React.useEffect(() => {
     if (command.command !== commandText) {
@@ -28,7 +29,7 @@ export const Command = ({ command }: CommandProps) => {
     fetch(`http://localhost:4040/commands/${command.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ command: commandText, response, modOnly })
+      body: JSON.stringify({ command: commandText, response, modOnly, aliases })
     }).then(res => {
       setEditable(false);
     });
@@ -63,6 +64,16 @@ export const Command = ({ command }: CommandProps) => {
             id={`response-${command.id}`}
             value={response}
             onChange={e => setResponse(e.currentTarget.value)}
+            disabled={!editable}
+          />
+        </div>
+        <div>
+          <Label htmlFor="aliases">Aliases</Label>
+          <Input
+            type="text"
+            id="aliases"
+            value={aliases}
+            onChange={e => setAliases([e.currentTarget.value])}
             disabled={!editable}
           />
         </div>

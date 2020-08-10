@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { CommandAlias } from "./CommandAlias";
 
 @Entity()
@@ -9,7 +9,9 @@ export class Command {
   @Column()
   command!: string;
 
-  @ManyToOne(type => CommandAlias, commandAlias => commandAlias.command)
+  @OneToMany(type => CommandAlias, commandAlias => commandAlias.command, {
+    nullable: true
+  })
   aliases!: CommandAlias[];
 
   @Column()
