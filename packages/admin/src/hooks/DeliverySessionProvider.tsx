@@ -67,10 +67,7 @@ const reducer = (state: IState, action: IAction) => {
     }
 
     case ActionType.GAME_END: {
-      return {
-        ...state,
-        isActive: false
-      };
+      return initialState;
     }
 
     case ActionType.DELIVERY_SESSION_CREATED: {
@@ -125,8 +122,6 @@ export const DeliverySessionProvider = ({
     typeof setInterval
   > | null>(null);
 
-  console.log({ gameTime: state.gameTime });
-
   React.useEffect(() => {
     if (state.isActive) {
       setGameTimerTimeout(
@@ -176,6 +171,11 @@ export const DeliverySessionProvider = ({
       });
     };
     socket.on("cruise-choosed", cruiseChoosedHandler);
+
+    const gameStoppedHandler = () => {
+      dispatch({ type: ActionType.GAME_END, payload: null });
+    };
+    socket.on("game-stopped", gameStoppedHandler);
 
     return () => {
       socket.removeListener(

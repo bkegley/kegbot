@@ -40,6 +40,7 @@ export class GameService extends BaseService implements IGameService {
   }
 
   stopGame() {
+    this.io.emit("game-stopped");
     this.game = undefined;
   }
 

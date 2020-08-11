@@ -25,6 +25,10 @@ export const UpdateGame = ({ history, match }: UpdateGameProps) => {
 
   if (loading) return null;
 
+  if (!game) {
+    return <div>there is no game</div>;
+  }
+
   const stopGame = () => {
     fetch("http://localhost:4040/game/stop", { method: "POST" })
       .then(res => res.json())
