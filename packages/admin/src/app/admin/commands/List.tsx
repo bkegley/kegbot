@@ -1,7 +1,8 @@
 import React from "react";
-import { useSocket } from "../../../hooks/useSocket";
+import { Page } from "../../../components/Page";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { Command } from "./Command";
-import { Button, StyledLink } from "../../../components";
+import { ICommand } from "../../../interfaces/ICommand";
 
 enum FetchCommandActionTypes {
   FETCH_INIT = "FETCH_INIT",
@@ -24,12 +25,6 @@ interface CommandState {
   loading: boolean;
   error: any;
   data: ICommand[] | null;
-}
-
-interface ICommand {
-  id: number;
-  command: string;
-  response: string;
 }
 
 const initialState: CommandState = {
@@ -90,80 +85,46 @@ const reducer = (state: CommandState, action: CommandAction) => {
 };
 
 export const CommandList = () => {
-  const socket = useSocket();
-  const [state, dispatch] = React.useReducer(reducer, initialState);
-  const [shouldFetch, setShouldFetch] = React.useState(true);
+  const history = useHistory();
+  const match = useRouteMatch();
+  const [state, dispatch] = React.useReducer<
+    React.Reducer<CommandState, CommandAction>
+  >(reducer, initialState);
 
   React.useEffect(() => {
-    socket.on("command-created", (data: ICommand) => {
-      dispatch({
-        type: CommandEventActionTypes.COMMAND_CREATED,
-        payload: data
+    dispatch({ type: FetchCommandActionTypes.FETCH_INIT });
+    fetch("http://localhost:4040/commands")
+      .then(res => res.json())
+      .then(res => {
+        dispatch({
+          type: FetchCommandActionTypes.FETCH_SUCCESS,
+          payload: res
+        });
+      })
+      .catch(err => {
+        dispatch({ type: FetchCommandActionTypes.FETCH_ERROR, payload: err });
       });
-    });
-
-    socket.on("command-updated", (data: ICommand) => {
-      dispatch({
-        type: CommandEventActionTypes.COMMAND_UPDATED,
-        payload: data
-      });
-    });
-
-    socket.on("command-deleted", (id: number) => {
-      dispatch({ type: CommandEventActionTypes.COMMAND_DELETED, payload: id });
-    });
-
-    return () => socket.close();
   }, []);
 
-  React.useEffect(() => {
-    if (shouldFetch) {
-      setShouldFetch(false);
-      dispatch({ type: FetchCommandActionTypes.FETCH_INIT });
-      fetch("http://localhost:4040/commands")
-        .then(res => res.json())
-        .then(res => {
-          dispatch({
-            type: FetchCommandActionTypes.FETCH_SUCCESS,
-            payload: res
-          });
-        })
-        .catch(err => {
-          dispatch({ type: FetchCommandActionTypes.FETCH_ERROR, payload: err });
-        });
-    }
-  }, [shouldFetch]);
-
   return (
-    <div>
-      <div className="mb-6">
-        <h1 className="text-3xl tracking-wide text-indigo-600 uppercase">
-          Chat Commands
-        </h1>
-      </div>
-      <div className="w-full text-right space-x-4">
-        <Button
-          variant="secondary"
-          type="Button"
-          onClick={() => setShouldFetch(true)}
-          disabled={shouldFetch || state.loading}
-        >
-          Refresh
-        </Button>
-        <StyledLink to="/admin/commands/create">Create New</StyledLink>
-      </div>
-
+    <Page
+      title="Commands"
+      primaryAction={{
+        text: "Create New",
+        onClick: () => history.push(`${match.url}/create`)
+      }}
+    >
       {!state.data ? (
         <div>
           <p>Looks like there isn't data yet...</p>
         </div>
       ) : (
-        <div className="flex flex-col flex-wrap items-start max-w-full md:flex-row space-y-4 md:space-y-0">
-          {state.data.map(command => {
-            return <Command command={command} key={command.id} />;
-          })}
-        </div>
+        <ul className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          {state.data.map(command => (
+            <Command command={command} />
+          ))}
+        </ul>
       )}
-    </div>
+    </Page>
   );
 };

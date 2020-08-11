@@ -51,7 +51,7 @@ export class CommandService extends BaseService implements ICommandService {
       command: string;
       response: string;
       modOnly: boolean;
-      aliases: string[];
+      aliases: Array<{ alias: string }>;
     }
   ) {
     const { aliases, ...remainingInput } = input;
@@ -73,13 +73,15 @@ export class CommandService extends BaseService implements ICommandService {
 
     const toCreate = aliases.filter(alias => {
       return !existingAliases.find(
-        existingAlias => existingAlias.alias === alias
+        existingAlias => existingAlias.alias === alias.alias
       );
     });
 
     const { toDelete, toAppend } = existingAliases.reduce(
       (acc, existingAlias) => {
-        const foundAlias = aliases.find(alias => alias === existingAlias.alias);
+        const foundAlias = aliases.find(
+          alias => alias.alias === existingAlias.alias
+        );
         if (foundAlias) {
           return {
             ...acc,
@@ -98,12 +100,10 @@ export class CommandService extends BaseService implements ICommandService {
       }
     );
 
-    console.log({ toCreate, toDelete, toAppend });
-
     await Promise.all(
       toCreate.map(async alias => {
         const commandAlias = new CommandAlias();
-        commandAlias.alias = alias;
+        commandAlias.alias = alias.alias;
         commandAlias.command = command;
         await this.manager.save(commandAlias);
         return commandAlias;

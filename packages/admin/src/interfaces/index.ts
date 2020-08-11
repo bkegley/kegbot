@@ -1,3 +1,4 @@
+export * from "./ICommand";
 export * from "./IDeliverySession";
 export * from "./IPew";
 export * from "./IPewSuggestion";

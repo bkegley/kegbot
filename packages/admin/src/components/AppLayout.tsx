@@ -9,7 +9,9 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
-      <main className="container py-32 mx-auto">{children}</main>
+      <main className="container py-32 mx-auto">
+        <div className="mx-10">{children}</div>
+      </main>
     </div>
   );
 };
