@@ -32,6 +32,10 @@ export class UserService extends BaseService implements IUserService {
     return this.manager
       .createQueryBuilder(User, "user")
       .where("username = :username", { username: username.toLowerCase() })
+      .innerJoinAndSelect("user.vehicles", "vehicles")
+      .innerJoinAndSelect("vehicles.vehicle", "vehicle")
+      .innerJoinAndSelect("user.pews", "pews")
+      .innerJoinAndSelect("pews.pew", "pew")
       .getOne();
   }
 
