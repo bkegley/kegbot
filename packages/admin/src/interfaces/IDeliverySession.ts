@@ -5,6 +5,7 @@ export interface IDeliverySession {
   id: number;
   duration: number;
   reward: number;
+  distance: number;
   user: IUser;
   userVehicle: IUserVehicle;
 }

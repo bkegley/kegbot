@@ -17,6 +17,10 @@ export interface IUserService {
     username: string,
     vehicleName: string
   ): Promise<UserVehicle | undefined>;
+  updateUserVehicle(
+    userVehicleId: number,
+    input: Partial<UserVehicle>
+  ): Promise<UserVehicle | undefined>;
   purchasePew(username: string, pewName: string): Promise<any>;
   getUserPewByName(
     username: string,

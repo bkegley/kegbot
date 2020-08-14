@@ -10,4 +10,6 @@ export interface IDeliverySessionService {
     deliverySessionId: number,
     userVehicle: UserVehicle
   ): Promise<boolean>;
+  win(deliverySessionId: number): Promise<boolean | undefined>;
+  lose(deliverySessionId: number): Promise<boolean | undefined>;
 }

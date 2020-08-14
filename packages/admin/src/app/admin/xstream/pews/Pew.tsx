@@ -15,7 +15,7 @@ export const Pew = ({ pew }: PewProps) => {
           {pew.name}
         </h3>
         <span className="px-2 py-px text-xs font-medium text-green-900 bg-green-300 rounded-full leading-4">
-          {pew.expendable ? "Infinite" : "One-Time"}
+          {pew.expendable ? "One-Time" : "Infinite"}
         </span>
         <div className="mt-4 grid grid-cols-2">
           <div className="sm:col-span-1">

@@ -115,6 +115,26 @@ export class UserService extends BaseService implements IUserService {
     return vehicle;
   }
 
+  public async updateUserVehicle(
+    userVehicleId: number,
+    input: Partial<Omit<UserVehicle, "id">>
+  ) {
+    const userVehicle = await this.manager
+      .createQueryBuilder(UserVehicle, "userVehicle")
+      .where("id = :userVehicleId", { userVehicleId })
+      .getOne();
+
+    if (!userVehicle) return;
+
+    (Object.keys(input) as Array<keyof typeof input>).map(key => {
+      // @ts-ignore
+      userVehicle[key] = input[key];
+    });
+
+    await this.manager.save(userVehicle);
+    return userVehicle;
+  }
+
   public async purchasePew(username: string, pewName: string) {
     const [user, pew] = await Promise.all([
       this.getByUsername(username),

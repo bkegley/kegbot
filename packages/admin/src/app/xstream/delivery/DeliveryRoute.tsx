@@ -1,9 +1,18 @@
 import React from "react";
+import { useDeliverySession } from "../../../hooks/useDeliverySession";
 
 export const DeliveryRoute = () => {
+  const { deliverySession } = useDeliverySession();
+  if (!deliverySession) return null;
+
+  const { distance, vehicle } = deliverySession;
+  if (!vehicle) return null;
+
   return (
     <div>
-      <h1>This is our delivery route</h1>
+      <p>
+        {vehicle.location}/{distance}
+      </p>
     </div>
   );
 };

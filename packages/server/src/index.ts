@@ -9,7 +9,11 @@ import { ormConfig } from "./config";
 import { TYPES } from "./abstract";
 import { CommandHandler } from "./command/CommandHandler";
 import { Container } from "./utils/Container";
-import { ServiceRegistry } from "./service";
+import {
+  ServiceRegistry,
+  IGameService,
+  IDeliverySessionService
+} from "./service";
 import { RouteModule } from "./route";
 import { Application } from "express";
 import { CommandModule } from "./command";

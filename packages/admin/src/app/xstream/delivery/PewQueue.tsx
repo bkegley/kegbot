@@ -35,7 +35,7 @@ export const PewQueue = () => {
         </h1>
       </div>
       <AnimatePresence>
-        {pews.slice(0, 2).map((pew, index) => {
+        {pews.slice(0, 5).map((pew, index) => {
           return (
             <Pew
               key={pew.uuid}

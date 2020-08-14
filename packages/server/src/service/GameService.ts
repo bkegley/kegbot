@@ -3,14 +3,63 @@ import { IGameService, GameOptions, IGame } from "./IGameService";
 import { IPhoneService } from "./IPhoneService";
 import { EntityManager } from "typeorm";
 import { Server } from "socket.io";
+import { IDeliverySessionService } from "./IDeliverySession";
+import { IUserService } from "./IUserService";
+
+interface IGameEndData {
+  deliverySessionId: number;
+  vehicleId: number;
+  vehicleHealth: number;
+  username: string;
+  reward: number;
+}
 
 export class GameService extends BaseService implements IGameService {
   private phoneService: IPhoneService;
   private game?: IGame;
+  private deliverySessionService: IDeliverySessionService;
+  private userService: IUserService;
 
-  constructor(manager: EntityManager, io: Server, phoneService: IPhoneService) {
+  constructor(
+    manager: EntityManager,
+    io: Server,
+    phoneService: IPhoneService,
+    deliverySessionService: IDeliverySessionService,
+    userService: IUserService
+  ) {
     super(manager, io);
     this.phoneService = phoneService;
+    this.deliverySessionService = deliverySessionService;
+    this.userService = userService;
+
+    this.io.on("connection", socket => {
+      socket.on(
+        "game-won",
+        ({
+          deliverySessionId,
+          vehicleId,
+          vehicleHealth,
+          username,
+          reward
+        }: IGameEndData) => {
+          this.deliverySessionService.win(deliverySessionId);
+          this.userService.updateUserVehicle(vehicleId, {
+            health: vehicleHealth
+          });
+          this.userService.give(username, reward);
+        }
+      );
+
+      socket.on(
+        "game-over",
+        ({ deliverySessionId, vehicleId, vehicleHealth }: IGameEndData) => {
+          this.deliverySessionService.lose(deliverySessionId);
+          this.userService.updateUserVehicle(vehicleId, {
+            health: vehicleHealth
+          });
+        }
+      );
+    });
   }
 
   getGame() {

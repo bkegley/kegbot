@@ -35,14 +35,14 @@ export class DeliverySessionService extends BaseService
 
       const { rewardMultiplier, difficultyModifier } = game.options;
 
-      const duration =
-        ((Math.random() + 0.5) * 100 * 60000) / difficultyModifier;
-
       const deliverySession = new DeliverySession();
       deliverySession.user = user;
       deliverySession.isActive = true;
       deliverySession.reward = Math.floor(
         Math.random() * rewardMultiplier * 5000
+      );
+      deliverySession.distance = Math.floor(
+        (Math.random() + 0.5) * 1000 * difficultyModifier
       );
       deliverySession.duration = Math.floor(
         ((Math.random() + 0.5) * 100 * 60000) / difficultyModifier
@@ -75,6 +75,26 @@ export class DeliverySessionService extends BaseService
       .createQueryBuilder()
       .update(DeliverySession)
       .set({ userVehicle })
+      .where("id = :deliverySessionId", { deliverySessionId })
+      .execute();
+    return res.affected === 1;
+  }
+
+  async win(deliverySessionId: number) {
+    const res = await this.manager
+      .createQueryBuilder()
+      .update(DeliverySession)
+      .set({ status: "won" })
+      .where("id = :deliverySessionId", { deliverySessionId })
+      .execute();
+    return res.affected === 1;
+  }
+
+  async lose(deliverySessionId: number) {
+    const res = await this.manager
+      .createQueryBuilder()
+      .update(DeliverySession)
+      .set({ status: "lost" })
       .where("id = :deliverySessionId", { deliverySessionId })
       .execute();
     return res.affected === 1;

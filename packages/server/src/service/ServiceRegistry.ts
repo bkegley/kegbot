@@ -63,15 +63,6 @@ export class ServiceRegistry {
       )
     );
 
-    this.container.bind<IGameService>(
-      TYPES.GameService,
-      new GameService(
-        this.container.resolve(TYPES.EntityManager),
-        this.container.resolve(TYPES.IOServer),
-        this.container.resolve(TYPES.PhoneService)
-      )
-    );
-
     this.container.bind<IDeliverySessionService>(
       TYPES.DeliverySessionService,
       () =>
@@ -81,6 +72,17 @@ export class ServiceRegistry {
           this.container.resolve(TYPES.UserService),
           this.container.resolve(TYPES.GameService)
         )
+    );
+
+    this.container.bind<IGameService>(
+      TYPES.GameService,
+      new GameService(
+        this.container.resolve(TYPES.EntityManager),
+        this.container.resolve(TYPES.IOServer),
+        this.container.resolve(TYPES.PhoneService),
+        this.container.resolve(TYPES.DeliverySessionService),
+        this.container.resolve(TYPES.UserService)
+      )
     );
 
     this.container.bind<IVehicleService>(

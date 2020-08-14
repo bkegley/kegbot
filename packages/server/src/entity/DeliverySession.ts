@@ -17,6 +17,12 @@ export class DeliverySession {
   @Column({ default: 250 })
   reward!: number;
 
+  @Column({ default: 100000 })
+  distance!: number;
+
+  @Column({ default: "pending" })
+  status!: "pending" | "won" | "lost";
+
   @ManyToOne(type => UserVehicle, userVehicle => userVehicle.deliverySessions)
   userVehicle!: UserVehicle;
 
