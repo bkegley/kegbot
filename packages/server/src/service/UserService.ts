@@ -32,10 +32,10 @@ export class UserService extends BaseService implements IUserService {
     return this.manager
       .createQueryBuilder(User, "user")
       .where("username = :username", { username: username.toLowerCase() })
-      .innerJoinAndSelect("user.vehicles", "vehicles")
-      .innerJoinAndSelect("vehicles.vehicle", "vehicle")
-      .innerJoinAndSelect("user.pews", "pews")
-      .innerJoinAndSelect("pews.pew", "pew")
+      .leftJoinAndSelect("user.vehicles", "vehicles")
+      .leftJoinAndSelect("vehicles.vehicle", "vehicle")
+      .leftJoinAndSelect("user.pews", "pews")
+      .leftJoinAndSelect("pews.pew", "pew")
       .getOne();
   }
 
@@ -145,12 +145,18 @@ export class UserService extends BaseService implements IUserService {
       this.pewService.getByName(pewName)
     ]);
 
+    console.log({ user, pew });
+
     if (!user || !pew) {
       throw new Error("User or Pew was not found");
     }
 
     if (user.kegerrands < pew.cost) {
       throw new Error("User does not have enough kegerrands to purchase");
+    }
+
+    if (user.pews.find(pew => pew.pew.name === pewName) && !pew.expendable) {
+      throw new Error("User already has this non-expendable pew");
     }
 
     const purchasedPew = new UserPew();
