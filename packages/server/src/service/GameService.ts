@@ -35,28 +35,40 @@ export class GameService extends BaseService implements IGameService {
     this.io.on("connection", socket => {
       socket.on(
         "game-won",
-        ({
+        async ({
           deliverySessionId,
           vehicleId,
           vehicleHealth,
           username,
           reward
         }: IGameEndData) => {
-          this.deliverySessionService.win(deliverySessionId);
-          this.userService.updateUserVehicle(vehicleId, {
-            health: vehicleHealth
-          });
-          this.userService.give(username, reward);
+          await Promise.all([
+            this.deliverySessionService.win(deliverySessionId),
+            this.userService.updateUserVehicle(vehicleId, {
+              health: vehicleHealth
+            }),
+            this.userService.give(username, reward)
+          ]);
+
+          this.phoneService.restart();
         }
       );
 
       socket.on(
         "game-over",
-        ({ deliverySessionId, vehicleId, vehicleHealth }: IGameEndData) => {
-          this.deliverySessionService.lose(deliverySessionId);
-          this.userService.updateUserVehicle(vehicleId, {
-            health: vehicleHealth
-          });
+        async ({
+          deliverySessionId,
+          vehicleId,
+          vehicleHealth
+        }: IGameEndData) => {
+          await Promise.all([
+            this.deliverySessionService.lose(deliverySessionId),
+            this.userService.updateUserVehicle(vehicleId, {
+              health: vehicleHealth
+            })
+          ]);
+
+          this.phoneService.restart();
         }
       );
     });
