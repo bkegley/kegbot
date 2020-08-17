@@ -16,7 +16,7 @@ export const XStreamDelivery = () => {
       <div className="absolute top-0 left-0 mt-40">
         <PewClue />
       </div>
-      <div className="absolute top-0 right-0 w-1/4">
+      <div className="absolute top-0 w-full left">
         <PewQueue />
       </div>
       <div className="flex flex-col items-center justify-center min-h-screen">
