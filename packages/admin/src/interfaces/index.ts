@@ -1,5 +1,6 @@
 export * from "./ICommand";
 export * from "./IDeliverySession";
+export * from "./IHelp";
 export * from "./IPew";
 export * from "./IPewSuggestion";
 export * from "./IUser";

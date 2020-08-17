@@ -8,6 +8,30 @@ type IHelp = {
     description: string;
   };
 };
+
+const help: IHelp = {
+  "!hi": {
+    use: "!hi any message",
+    description: "Add yourself to the db so you can play the game!"
+  },
+  "!purchase": {
+    use: "!purchase pew/vehicle name",
+    description: "Purchase a pew or vehicle"
+  },
+  "!answer": {
+    use: "!answer",
+    description: "Answer the phone when it's ringing"
+  },
+  "!choosecruise": {
+    use: "!choosecruise id",
+    description: "Choose your vehicle for the delivery"
+  },
+  "!pewpew": {
+    use: "!pewpew pewName",
+    description: "During a delivery session attack the driver"
+  }
+};
+
 export class PewClueCommand implements ICommand {
   private io: Server;
   private twitchClient: Client;
@@ -23,16 +47,6 @@ export class PewClueCommand implements ICommand {
     message: string,
     self: boolean
   ) {
-    const help: IHelp = {
-      "!pewdo": {
-        use: "!pewdo commandName description",
-        description: "This is a description"
-      },
-      "!pewpew": {
-        use: "!pewpew pewName",
-        description: "During a delivery session attack the driver"
-      }
-    };
     this.io.emit("pew-clue", help);
   }
 }
