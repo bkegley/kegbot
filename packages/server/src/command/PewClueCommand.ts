@@ -14,6 +14,10 @@ const help: IHelp = {
     use: "!hi any message",
     description: "Add yourself to the db so you can play the game!"
   },
+  "!list": {
+    use: "!list pews/vehicles",
+    description: "List the available items to purchase"
+  },
   "!purchase": {
     use: "!purchase pew/vehicle name",
     description: "Purchase a pew or vehicle"

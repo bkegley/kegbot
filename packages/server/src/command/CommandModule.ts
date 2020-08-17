@@ -17,6 +17,7 @@ import { OrderCommand } from "./OrderCommand";
 import { PewClueCommand } from "./PewClueCommand";
 import { ChoosePeruseCommand } from "./ChoosePeruse";
 import { PewViewCommand } from "./PiewView";
+import { ListCommand } from "./ListCommand";
 
 export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
@@ -137,6 +138,17 @@ export class CommandModule extends BaseModule implements IModule {
         new GiveCommand(
           this.container.resolve(TYPES.IOServer),
           this.container.resolve(TYPES.UserService)
+        )
+    );
+
+    this.commandRegistry.set(
+      "!list",
+      () =>
+        new ListCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.TwitchClient),
+          this.container.resolve(TYPES.PewService),
+          this.container.resolve(TYPES.VehicleService)
         )
     );
 
