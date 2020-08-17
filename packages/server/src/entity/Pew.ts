@@ -10,6 +10,9 @@ export class Pew {
   name!: string;
 
   @Column({ nullable: true })
+  description!: string;
+
+  @Column({ nullable: true })
   healthModification?: number;
 
   @Column({ nullable: true })

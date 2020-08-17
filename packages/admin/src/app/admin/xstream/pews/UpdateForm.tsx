@@ -1,5 +1,11 @@
 import React from "react";
-import { Input, Label, Checkbox, Button } from "../../../../components";
+import {
+  Input,
+  Label,
+  Checkbox,
+  Button,
+  TextArea
+} from "../../../../components";
 import { useRouteMatch, Link, useHistory } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import { IPew } from "../../../../interfaces";
@@ -39,6 +45,7 @@ export const UpdatePewForm = ({ pewId }: UpdatePewFormProps) => {
       <Formik
         initialValues={{
           name: pew.name ?? "",
+          description: pew.description ?? "",
           cost: pew.cost ?? 0,
           expendable: pew.expendable ?? false,
           healthModification: pew.healthModification ?? 0,
@@ -67,6 +74,10 @@ export const UpdatePewForm = ({ pewId }: UpdatePewFormProps) => {
               <div>
                 <Label htmlFor="name">Name</Label>
                 <Field as={Input} name="name" />
+              </div>
+              <div>
+                <Label htmlFor="descripition">Description</Label>
+                <Field as={TextArea} name="description" />
               </div>
               <div>
                 <Label htmlFor="cost">Cost</Label>
