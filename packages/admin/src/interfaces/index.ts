@@ -1,3 +1,4 @@
+export * from "./IAid";
 export * from "./ICommand";
 export * from "./IDeliverySession";
 export * from "./IHelp";

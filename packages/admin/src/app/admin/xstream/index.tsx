@@ -4,6 +4,7 @@ import { VehicleRouter } from "./vehicles";
 import { XStream } from "./XStream";
 import { PewsRouter } from "./pews";
 import { GameRouter } from "./game";
+import { AidsRouter } from "./aids";
 
 export const XStreamAdminRouter = () => {
   const match = useRouteMatch();
@@ -12,7 +13,10 @@ export const XStreamAdminRouter = () => {
       <Route exact path={match.url}>
         {() => <XStream />}
       </Route>
-      <Route path={`${match.url}/vehicles`}>{() => <VehicleRouter />}</Route>
+      <Route path={`${match.url}/aids`}>{() => <AidsRouter />}</Route>
+      <Route path={`${match.url}/vehicles`}>
+        {() => <VehicleRouter />}
+      </Route>{" "}
       <Route path={`${match.url}/pews`}>{() => <PewsRouter />}</Route>
       <Route path={`${match.url}/game`}>{() => <GameRouter />}</Route>
     </Switch>

@@ -10,6 +10,9 @@ export const XStream = () => {
         XStream
       </h1>
       <div>
+        <StyledLink to={`${match.url}/aids`}>Aids</StyledLink>
+      </div>
+      <div>
         <StyledLink to={`${match.url}/vehicles`}>Vehicles</StyledLink>
       </div>
       <div>

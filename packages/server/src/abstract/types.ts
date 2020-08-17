@@ -12,6 +12,7 @@ export const TYPES = {
   HiCommand: Symbol("HiCommand"),
 
   // services
+  AidService: Symbol("AidService"),
   CommandService: Symbol("CommandService"),
   DeliverySessionService: Symbol("DeliverySessionService"),
   GameService: Symbol("GameService"),

@@ -13,3 +13,5 @@ export * from "./PhoneService";
 export * from "./ServiceRegistry";
 export * from "./UserService";
 export * from "./VehicleService";
+export * from "./AidService";
+export * from "./IAidService";

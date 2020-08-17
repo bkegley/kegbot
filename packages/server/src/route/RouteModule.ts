@@ -28,6 +28,11 @@ import { GameGetRouteHandler } from "./handler/GameGet";
 import { GameUpdateRouteHandler } from "./handler/GameUpdate";
 import { VehicleDeleteRouteHandler } from "./handler/VehicleDelete";
 import { CommandGetRouteHandler } from "./handler/CommandGet";
+import { AidListRouteHandler } from "./handler/AidList";
+import { AidGetByIdRouteHandler } from "./handler/AidGetById";
+import { AidCreateRouteHandler } from "./handler/AidCreate";
+import { AidUpdateByIdRouteHandler } from "./handler/AidUpdateById";
+import { AidDeleteRouteHandler } from "./handler/AidDelete";
 
 export class RouteModule extends BaseModule {
   init() {
@@ -51,6 +56,37 @@ export class RouteModule extends BaseModule {
         new ListUserVehiclesByUsernameRouteHandler(
           this.container.resolve(TYPES.VehicleService)
         ).handle(req, res)
+    );
+
+    app.get("/aids", (req: Request, res) =>
+      new AidListRouteHandler(this.container.resolve(TYPES.AidService)).handle(
+        req,
+        res
+      )
+    );
+
+    app.get("/aids/:id", (req: Request<{ id: string }>, res) =>
+      new AidGetByIdRouteHandler(
+        this.container.resolve(TYPES.AidService)
+      ).handle(req, res)
+    );
+
+    app.post("/aids", (req: Request, res) =>
+      new AidCreateRouteHandler(
+        this.container.resolve(TYPES.AidService)
+      ).handle(req, res)
+    );
+
+    app.patch("/aids/:id", (req: Request<{ id: string }>, res) =>
+      new AidUpdateByIdRouteHandler(
+        this.container.resolve(TYPES.AidService)
+      ).handle(req, res)
+    );
+
+    app.delete("/aids/:id", (req: Request<{ id: string }>, res) =>
+      new AidDeleteRouteHandler(
+        this.container.resolve(TYPES.AidService)
+      ).handle(req, res)
     );
 
     app.get("/commands", (req, res) =>

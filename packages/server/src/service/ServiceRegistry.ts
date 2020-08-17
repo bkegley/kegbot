@@ -16,6 +16,8 @@ import { OrderService } from "./OrderService";
 import { IOrderService } from "./IOrderService";
 import { IGameService } from "./IGameService";
 import { GameService } from "./GameService";
+import { IAidService } from "./IAidService";
+import { AidService } from "./AidService";
 
 export class ServiceRegistry {
   private container: Container;
@@ -98,6 +100,15 @@ export class ServiceRegistry {
       TYPES.OrderService,
       resolver =>
         new OrderService(
+          resolver.resolve(TYPES.EntityManager),
+          resolver.resolve(TYPES.IOServer)
+        )
+    );
+
+    this.container.bind<IAidService>(
+      TYPES.AidService,
+      resolver =>
+        new AidService(
           resolver.resolve(TYPES.EntityManager),
           resolver.resolve(TYPES.IOServer)
         )
