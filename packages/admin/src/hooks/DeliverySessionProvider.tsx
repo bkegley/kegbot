@@ -1,5 +1,11 @@
 import React from "react";
-import { IUserVehicle, IUser, IDeliverySession, IUserPew } from "../interfaces";
+import {
+  IUserVehicle,
+  IUser,
+  IDeliverySession,
+  IUserPew,
+  IUserAid
+} from "../interfaces";
 import { useSocket } from "./useSocket";
 
 export interface IDeliverySessionContext {
@@ -39,7 +45,8 @@ type IAction =
       };
     }
   | { type: ActionType.PEW_PEWED; payload: IUserPew }
-  | { type: ActionType.SPEED_RESTORED; payload: number };
+  | { type: ActionType.SPEED_RESTORED; payload: number }
+  | { type: ActionType.AID_PLAYED; payload: IUserAid };
 
 enum ActionType {
   DELIVERY_SESSION_CREATED = "DELIVERY_SESSION_CREATED",
@@ -49,7 +56,8 @@ enum ActionType {
   GAME_WIN = "GAME_WIN",
   VEHICLE_SELECTED = "VEHICLE_SELECTED",
   PEW_PEWED = "PEW_PEWED",
-  SPEED_RESTORED = "SPEED_RESTORED"
+  SPEED_RESTORED = "SPEED_RESTORED",
+  AID_PLAYED = "AID_PLAYED"
 }
 
 enum GameOverType {
@@ -147,6 +155,22 @@ const reducer = (state: IState, action: IAction) => {
         vehicle: {
           ...state.vehicle,
           speed: state.vehicle.speed + action.payload
+        }
+      };
+    }
+    case ActionType.AID_PLAYED: {
+      if (!state.vehicle) {
+        return state;
+      }
+
+      return {
+        ...state,
+        vehicle: {
+          ...state.vehicle,
+          speed:
+            state.vehicle.speed + action.payload.aid.speedModification ?? 0,
+          health:
+            state.vehicle.health + action.payload.aid.healthModification ?? 0
         }
       };
     }
@@ -272,7 +296,14 @@ export const DeliverySessionProvider = ({
     const gameStoppedHandler = () => {
       dispatch({ type: ActionType.GAME_OVER, payload: null });
     };
+
     socket.on("game-stopped", gameStoppedHandler);
+
+    const aidPlayedHandler = (aid: IUserAid) => {
+      dispatch({ type: ActionType.AID_PLAYED, payload: aid });
+    };
+
+    socket.on("aid-played", aidPlayedHandler);
 
     return () => {
       socket.removeListener(
@@ -280,6 +311,8 @@ export const DeliverySessionProvider = ({
         deliverySessionCreatedHandler
       );
       socket.removeListener("cruise-choosed", cruiseChoosedHandler);
+      socket.removeListener("game-stopped", gameStoppedHandler);
+      socket.removeListener("aid-played", aidPlayedHandler);
     };
   }, []);
 

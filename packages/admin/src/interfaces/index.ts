@@ -8,3 +8,4 @@ export * from "./IUser";
 export * from "./IUserPew";
 export * from "./IUserVehicle";
 export * from "./IVehicle";
+export * from "./IUserAid";

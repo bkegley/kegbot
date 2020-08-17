@@ -35,7 +35,8 @@ export class ServiceRegistry {
           resolver.resolve(TYPES.EntityManager),
           resolver.resolve(TYPES.IOServer),
           resolver.resolve(TYPES.VehicleService),
-          resolver.resolve(TYPES.PewService)
+          resolver.resolve(TYPES.PewService),
+          resolver.resolve(TYPES.AidService)
         )
     );
 

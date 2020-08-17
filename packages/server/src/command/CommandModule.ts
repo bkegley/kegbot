@@ -18,6 +18,7 @@ import { PewClueCommand } from "./PewClueCommand";
 import { ChoosePeruseCommand } from "./ChoosePeruse";
 import { PewViewCommand } from "./PiewView";
 import { ListCommand } from "./ListCommand";
+import { PlayAidCommand } from "./PlayAid";
 
 export class CommandModule extends BaseModule implements IModule {
   private commandRegistry = new Map<string, () => ICommand>();
@@ -137,6 +138,16 @@ export class CommandModule extends BaseModule implements IModule {
       () =>
         new GiveCommand(
           this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.UserService)
+        )
+    );
+
+    this.commandRegistry.set(
+      "!playaid",
+      () =>
+        new PlayAidCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.TwitchClient),
           this.container.resolve(TYPES.UserService)
         )
     );

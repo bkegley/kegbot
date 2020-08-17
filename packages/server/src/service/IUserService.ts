@@ -1,6 +1,7 @@
 import { User } from "../entity/User";
 import { UserVehicle } from "../entity/UserVehicle";
 import { UserPew } from "../entity/UserPew";
+import { UserAid } from "../entity/UserAid";
 
 export interface IUserService {
   listUsers(): Promise<User[]>;
@@ -26,4 +27,9 @@ export interface IUserService {
     username: string,
     pewName: string
   ): Promise<UserPew | undefined>;
+  purchaseAid(username: string, aidName: string): Promise<UserAid>;
+  getUserAidByName(
+    username: string,
+    aidName: string
+  ): Promise<UserAid | undefined>;
 }

@@ -3,8 +3,7 @@ import { Server } from "socket.io";
 import { ChatUserstate, Client } from "tmi.js";
 import { IUserService } from "../service";
 
-type PurchaseTypes = "vehicle" | "pew";
-
+type PurchaseTypes = "vehicle" | "pew" | "aid";
 export class PurchaseCommand implements ICommand {
   private io: Server;
   private twitchClient: Client;
@@ -51,6 +50,17 @@ export class PurchaseCommand implements ICommand {
           );
           this.io.emit("purchased-pew", {
             pew: purchasedPew
+          });
+          break;
+        }
+
+        case "aid": {
+          const purchasedAid = await this.userService.purchaseAid(
+            user.username,
+            name
+          );
+          this.io.emit("purchased-aid", {
+            aid: purchasedAid
           });
           break;
         }

@@ -30,6 +30,7 @@ export const GameStats = () => {
               <dt className="text-sm font-medium text-gray-500 leading-5">
                 Health
               </dt>
+              <p>{vehicle.health}</p>
               <dd className="relative w-full h-full mt-1 text-sm text-gray-900 bg-red-600 leading-5">
                 <div
                   className="absolute top-0 left-0 h-full bg-green-600"

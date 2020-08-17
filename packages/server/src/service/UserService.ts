@@ -8,20 +8,25 @@ import { UserVehicle } from "../entity/UserVehicle";
 import { IPewService } from "./IPewService";
 import { UserPew } from "../entity/UserPew";
 import { Pew } from "../entity/Pew";
+import { IAidService } from "./IAidService";
+import { UserAid } from "../entity/UserAid";
 
 export class UserService extends BaseService implements IUserService {
   private vehicleService: IVehicleService;
   private pewService: IPewService;
+  private aidService: IAidService;
 
   constructor(
     manager: EntityManager,
     io: Server,
     vehicleService: IVehicleService,
-    pewService: IPewService
+    pewService: IPewService,
+    aidService: IAidService
   ) {
     super(manager, io);
     this.vehicleService = vehicleService;
     this.pewService = pewService;
+    this.aidService = aidService;
   }
 
   public listUsers() {
@@ -145,8 +150,6 @@ export class UserService extends BaseService implements IUserService {
       this.pewService.getByName(pewName)
     ]);
 
-    console.log({ user, pew });
-
     if (!user || !pew) {
       throw new Error("User or Pew was not found");
     }
@@ -184,5 +187,46 @@ export class UserService extends BaseService implements IUserService {
     }
 
     return pew;
+  }
+
+  public async purchaseAid(username: string, aidName: string) {
+    const [user, aid] = await Promise.all([
+      this.findOrCreateUser(username),
+      this.aidService.getByName(aidName)
+    ]);
+
+    if (!user || !aid) {
+      throw new Error("User or Vehicle not found");
+    }
+
+    if (user.kegerrands < aid.cost) {
+      throw new Error("User does not have enough kegerrands to purchase");
+    }
+
+    const purchasedAid = new UserAid();
+    purchasedAid.user = user;
+    purchasedAid.aid = aid;
+    this.manager.save(purchasedAid);
+
+    user.kegerrands -= aid.cost;
+    this.manager.save(user);
+
+    return purchasedAid;
+  }
+
+  public async getUserAidByName(username: string, aidName: string) {
+    const aid = await this.manager
+      .createQueryBuilder(UserAid, "userAid")
+      .innerJoinAndSelect("userAid.user", "user")
+      .innerJoinAndSelect("userAid.aid", "aid")
+      .where("user.username = :username", { username })
+      .andWhere("aid.name = :name", { name: aidName })
+      .getOne();
+
+    if (aid && aid.aid.expendable) {
+      this.manager.delete(UserAid, aid);
+    }
+
+    return aid;
   }
 }
