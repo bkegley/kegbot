@@ -27,7 +27,7 @@ export class AnswerCommand implements ICommand {
         } ringing.`
       );
       if (this.phoneService.isRinging) {
-        this.phoneService.answer(user.username);
+        this.phoneService.answer();
         this.deliverySessionService.createForUser(user.username);
       }
     }

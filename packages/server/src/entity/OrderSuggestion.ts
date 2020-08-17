@@ -9,7 +9,9 @@ export class OrderSuggestion {
   @Column({ default: false })
   approved!: boolean;
 
-  @ManyToOne(type => User, user => user.orderSuggestions)
+  @ManyToOne(type => User, user => user.orderSuggestions, {
+    onDelete: "SET NULL"
+  })
   user!: User;
 
   @Column()

@@ -41,6 +41,7 @@ export const VehicleSelection = () => {
       <h1 className="text-4xl text-center text-indigo-600">
         Choose Your Cruise!
       </h1>
+      <p className="text-lg text-center text-indigo-600">!choosecruise id</p>
       <ul className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
         {availableVehicles && !deliverySession.vehicle
           ? availableVehicles

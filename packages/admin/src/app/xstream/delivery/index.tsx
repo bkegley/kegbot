@@ -23,7 +23,7 @@ export const XStreamDelivery = () => {
         <GameStats />
         <VehicleSelection />
       </div>
-      <div className="absolute bottom-0 left-0 right-0 p-20 bg-blue-300">
+      <div className="absolute bottom-0 left-0 right-0 px-32 pb-10">
         <DeliveryRoute />
       </div>
     </DeliverySessionProvider>

@@ -18,7 +18,9 @@ export class PewSuggestion {
   @Column()
   description!: string;
 
-  @ManyToOne(type => User, user => user.pewSuggestions)
+  @ManyToOne(type => User, user => user.pewSuggestions, {
+    onDelete: "SET NULL"
+  })
   user!: User;
 
   @Column({ default: PewSuggestionStatus.PENDING })

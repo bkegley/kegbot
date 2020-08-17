@@ -1,6 +1,6 @@
 export interface IPhoneService {
   isRinging: boolean;
-  answer(username: string): void;
+  answer(): void;
   init(phoneFrequencyMultiplier?: number): void;
   reset(): void;
   restart(): void;

@@ -8,7 +8,9 @@ export class DeliverySession {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(type => User, user => user.deliverySessions)
+  @ManyToOne(type => User, user => user.deliverySessions, {
+    onDelete: "CASCADE"
+  })
   user!: User;
 
   @Column({ default: 60000 })
@@ -23,7 +25,9 @@ export class DeliverySession {
   @Column({ default: "pending" })
   status!: "pending" | "won" | "lost";
 
-  @ManyToOne(type => UserVehicle, userVehicle => userVehicle.deliverySessions)
+  @ManyToOne(type => UserVehicle, userVehicle => userVehicle.deliverySessions, {
+    onDelete: "SET NULL"
+  })
   userVehicle!: UserVehicle;
 
   @Column({ default: false })

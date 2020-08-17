@@ -6,6 +6,8 @@ export class CommandAlias {
   @PrimaryColumn()
   alias!: string;
 
-  @ManyToOne(type => Command, command => command.aliases)
+  @ManyToOne(type => Command, command => command.aliases, {
+    onDelete: "CASCADE"
+  })
   command!: Command;
 }

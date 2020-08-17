@@ -11,12 +11,14 @@ export class VehicleService extends BaseService implements IVehicleService {
     return vehicles;
   }
 
+  // @ts-ignore
   async listUserVehiclesByUsername(username: string) {
     const vehicles = await this.manager
       .createQueryBuilder(UserVehicle, "userVehicle")
       .innerJoinAndSelect("userVehicle.user", "user")
       .innerJoinAndSelect("userVehicle.vehicle", "vehicle")
       .where("user.username = :username", { username })
+      .andWhere("userVehicle.health > 0")
       .getMany();
 
     return vehicles;

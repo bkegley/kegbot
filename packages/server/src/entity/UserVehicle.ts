@@ -17,7 +17,9 @@ export class UserVehicle {
   @ManyToOne(type => User, user => user.vehicles)
   user!: User;
 
-  @ManyToOne(type => Vehicle, vehicle => vehicle.userVehicles)
+  @ManyToOne(type => Vehicle, vehicle => vehicle.userVehicles, {
+    onDelete: "CASCADE"
+  })
   vehicle!: Vehicle;
 
   @OneToMany(
