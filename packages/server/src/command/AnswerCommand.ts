@@ -21,11 +21,6 @@ export class AnswerCommand implements ICommand {
     self: boolean
   ) {
     if (user.username) {
-      console.log(
-        `${user.username} tried to answer the phone and it ${
-          this.phoneService.isRinging ? "was" : "was not"
-        } ringing.`
-      );
       if (this.phoneService.isRinging) {
         this.phoneService.answer();
         this.deliverySessionService.createForUser(user.username);

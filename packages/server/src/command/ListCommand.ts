@@ -35,6 +35,14 @@ export class ListCommand implements ICommand {
         string,
         "vehicles" | "pews" | "aids" | string
       ];
+      if (!type) {
+        this.twitchClient.say(
+          channel,
+          "Please specify either vehicles, pews, or aids with !list type"
+        );
+        return;
+      }
+
       switch (type) {
         case "vehicles": {
           const vehicles = await this.vehicleService.listVehicles();
