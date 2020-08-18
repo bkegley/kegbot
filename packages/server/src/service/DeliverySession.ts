@@ -39,13 +39,18 @@ export class DeliverySessionService extends BaseService
       deliverySession.user = user;
       deliverySession.isActive = true;
       deliverySession.reward = Math.floor(
-        Math.random() * rewardMultiplier * 5000
+        // rewardMultiplier 1-100
+        25 + (Math.random() + 0.5) * rewardMultiplier * 5
       );
-      deliverySession.distance = Math.floor(
-        (Math.random() + 0.5) * 1000 * difficultyModifier
+
+      const distance = Math.floor(
+        // difficultyModifier 1-100
+        500 + (Math.random() + 0.5) * 100 * difficultyModifier
       );
+      deliverySession.distance = distance;
+
       deliverySession.duration = Math.floor(
-        ((Math.random() + 0.5) * 100 * 60000) / difficultyModifier
+        distance * (Math.random() + 0.65) * 10
       );
 
       await this.manager

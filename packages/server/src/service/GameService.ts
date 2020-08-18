@@ -50,7 +50,9 @@ export class GameService extends BaseService implements IGameService {
             this.userService.give(username, reward)
           ]);
 
-          this.phoneService.restart();
+          setTimeout(() => {
+            this.phoneService.restart();
+          }, 10000);
         }
       );
 
@@ -68,7 +70,9 @@ export class GameService extends BaseService implements IGameService {
             })
           ]);
 
-          this.phoneService.restart();
+          setTimeout(() => {
+            this.phoneService.restart();
+          }, 10000);
         }
       );
     });

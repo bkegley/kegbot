@@ -45,8 +45,7 @@ export class PhoneService extends BaseService implements IPhoneService {
   }
 
   restart() {
-    if (!this.isRinging) {
-      this.init(this.currentPhoneFrequencyMultiplier);
-    }
+    this.reset();
+    this.init(this.currentPhoneFrequencyMultiplier);
   }
 }

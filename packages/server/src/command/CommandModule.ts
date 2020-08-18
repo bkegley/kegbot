@@ -159,7 +159,8 @@ export class CommandModule extends BaseModule implements IModule {
           this.container.resolve(TYPES.IOServer),
           this.container.resolve(TYPES.TwitchClient),
           this.container.resolve(TYPES.PewService),
-          this.container.resolve(TYPES.VehicleService)
+          this.container.resolve(TYPES.VehicleService),
+          this.container.resolve(TYPES.AidService)
         )
     );
 

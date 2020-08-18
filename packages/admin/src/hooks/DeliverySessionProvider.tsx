@@ -31,6 +31,7 @@ type IAction =
     }
   | { type: ActionType.GAME_TICK; payload: number }
   | { type: ActionType.GAME_START }
+  | { type: ActionType.GAME_RESET }
   | { type: ActionType.GAME_OVER; payload: GameOverType }
   | { type: ActionType.GAME_WIN; payload: GameWinType }
   | {
@@ -52,6 +53,7 @@ enum ActionType {
   DELIVERY_SESSION_CREATED = "DELIVERY_SESSION_CREATED",
   GAME_TICK = "GAME_TICK",
   GAME_START = "GAME_START",
+  GAME_RESET = "GAME_RESET",
   GAME_OVER = "GAME_OVER",
   GAME_WIN = "GAME_WIN",
   VEHICLE_SELECTED = "VEHICLE_SELECTED",
@@ -60,16 +62,16 @@ enum ActionType {
   AID_PLAYED = "AID_PLAYED"
 }
 
-enum GameOverType {
+export enum GameOverType {
   TIMEOUT = "TIMEOUT",
   VEHICLE_DESTROYED = "VEHICLE_DESTROYED"
 }
 
-enum GameWinType {
+export enum GameWinType {
   SUCCESS = "SUCCESS"
 }
 
-interface IState {
+export interface IState {
   id: number;
   isActive: boolean;
   duration: number;
@@ -77,6 +79,7 @@ interface IState {
   gameTime: number;
   reward: number;
   user: IUser;
+  sessionResult: GameWinType | GameOverType | null;
   vehicle: {
     id: number;
     location: number;
@@ -107,12 +110,22 @@ const reducer = (state: IState, action: IAction) => {
       };
     }
 
-    case ActionType.GAME_OVER: {
+    case ActionType.GAME_RESET: {
       return initialState;
     }
 
+    case ActionType.GAME_OVER: {
+      return {
+        ...state,
+        sessionResult: action.payload
+      };
+    }
+
     case ActionType.GAME_WIN: {
-      return initialState;
+      return {
+        ...state,
+        sessionResult: action.payload
+      };
     }
 
     case ActionType.DELIVERY_SESSION_CREATED: {
@@ -163,14 +176,20 @@ const reducer = (state: IState, action: IAction) => {
         return state;
       }
 
+      const newSpeed =
+        state.vehicle.speed + action.payload.aid.speedModification ?? 0;
+      const newHealth =
+        state.vehicle.health + action.payload.aid.healthModification ?? 0;
+
       return {
         ...state,
         vehicle: {
           ...state.vehicle,
-          speed:
-            state.vehicle.speed + action.payload.aid.speedModification ?? 0,
+          speed: newSpeed,
           health:
-            state.vehicle.health + action.payload.aid.healthModification ?? 0
+            newHealth > state.vehicle.baseHealth
+              ? state.vehicle.baseHealth
+              : newHealth
         }
       };
     }
@@ -188,7 +207,8 @@ const initialState: IState = {
   reward: null,
   isActive: false,
   user: null,
-  vehicle: null
+  vehicle: null,
+  sessionResult: null
 };
 
 const gameTick = 1000;
@@ -199,6 +219,10 @@ export const DeliverySessionProvider = ({
   const socket = useSocket();
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const [gameTimerTimeout, setGameTimerTimeout] = React.useState<ReturnType<
+    typeof setInterval
+  > | null>(null);
+
+  const [gameEndTimeout, setGameEndTimeout] = React.useState<ReturnType<
     typeof setInterval
   > | null>(null);
 
@@ -228,6 +252,13 @@ export const DeliverySessionProvider = ({
         username: state.user.username,
         reward: state.reward
       });
+
+      setGameEndTimeout(
+        setTimeout(() => {
+          dispatch({ type: ActionType.GAME_RESET });
+        }, 5000)
+      );
+
       dispatch({ type: ActionType.GAME_WIN, payload: GameWinType.SUCCESS });
     }
   }, [state.vehicle?.location, state.distance]);
@@ -242,6 +273,13 @@ export const DeliverySessionProvider = ({
         username: state.user.username,
         reward: state.reward
       });
+
+      setGameEndTimeout(
+        setTimeout(() => {
+          dispatch({ type: ActionType.GAME_RESET });
+        }, 5000)
+      );
+
       dispatch({ type: ActionType.GAME_OVER, payload: GameOverType.TIMEOUT });
     }
   }, [state.gameTime]);
@@ -253,11 +291,24 @@ export const DeliverySessionProvider = ({
         vehicleId: state.vehicle.id,
         vehicleHealth: state.vehicle.health
       });
+
+      setGameEndTimeout(
+        setTimeout(() => {
+          dispatch({ type: ActionType.GAME_RESET });
+        }, 5000)
+      );
+
       dispatch({
         type: ActionType.GAME_OVER,
         payload: GameOverType.VEHICLE_DESTROYED
       });
     }
+
+    return () => {
+      if (gameEndTimeout) {
+        clearTimeout(gameEndTimeout);
+      }
+    };
   }, [state.vehicle?.health]);
 
   React.useEffect(() => {
@@ -300,6 +351,15 @@ export const DeliverySessionProvider = ({
     socket.on("game-stopped", gameStoppedHandler);
 
     const aidPlayedHandler = (aid: IUserAid) => {
+      console.log({ aid });
+      if (aid.aid.speedModificationTimeout) {
+        setTimeout(() => {
+          dispatch({
+            type: ActionType.SPEED_RESTORED,
+            payload: aid.aid.speedModification * -1
+          });
+        }, aid.aid.speedModificationTimeout * gameTick);
+      }
       dispatch({ type: ActionType.AID_PLAYED, payload: aid });
     };
 

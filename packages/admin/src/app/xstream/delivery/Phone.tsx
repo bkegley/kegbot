@@ -5,23 +5,17 @@ import { Phone as PhoneIcon, PhoneCall } from "react-feather";
 export const Phone = () => {
   const socket = useSocket();
   const [isRinging, setIsRinging] = React.useState(false);
-  const [deliverySession, setDeliverySession] = React.useState<null | any>(
-    null
-  );
 
   React.useEffect(() => {
-    socket.on("phone-ringing", (bool: boolean) => {
+    const handlePhoneRinging = (bool: boolean) => {
       setIsRinging(bool);
-    });
+    };
+    socket.on("phone-ringing", handlePhoneRinging);
 
-    socket.on("delivery-session-created", deliverySession => {
-      setDeliverySession(deliverySession);
-    });
-
-    socket.on("delivery-session-finished", () => {
-      setDeliverySession(null);
-    });
-  });
+    return () => {
+      socket.removeListener("phone-ringing", handlePhoneRinging);
+    };
+  }, []);
 
   return (
     <div className="flex">
