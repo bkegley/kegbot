@@ -1,10 +1,22 @@
 import { BaseService } from "../abstract";
 import { IAidService } from "./IAidService";
 import { Aid } from "../entity/Aid";
+import { UserAid } from "../entity/UserAid";
 
 export class AidService extends BaseService implements IAidService {
   async listAids() {
     const aids = await this.manager.createQueryBuilder(Aid, "aid").getMany();
+    return aids;
+  }
+
+  async listUserAidsByUsername(username: string) {
+    const aids = await this.manager
+      .createQueryBuilder(UserAid, "userAid")
+      .innerJoinAndSelect("userAid.user", "user")
+      .innerJoinAndSelect("userAid.aid", "aid")
+      .where("user.username = :username", { username })
+      .getMany();
+
     return aids;
   }
 

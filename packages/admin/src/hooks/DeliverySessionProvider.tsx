@@ -120,6 +120,7 @@ const reducer = (state: IState, action: IAction) => {
     case ActionType.GAME_OVER: {
       return {
         ...state,
+        isActive: false,
         sessionResult: action.payload
       };
     }
@@ -127,6 +128,7 @@ const reducer = (state: IState, action: IAction) => {
     case ActionType.GAME_WIN: {
       return {
         ...state,
+        isActive: false,
         sessionResult: action.payload
       };
     }
@@ -373,7 +375,6 @@ export const DeliverySessionProvider = ({
     socket.on("game-stopped", gameStoppedHandler);
 
     const aidPlayedHandler = (aid: IUserAid) => {
-      console.log({ aid });
       if (aid.aid.speedModificationTimeout) {
         setTimeout(() => {
           dispatch({

@@ -7,7 +7,7 @@ export class UserAid {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(type => User, user => user.pews, { onDelete: "CASCADE" })
+  @ManyToOne(type => User, user => user.aids, { onDelete: "CASCADE" })
   user!: User;
 
   @ManyToOne(type => Aid, aid => aid.userAids, { onDelete: "CASCADE" })

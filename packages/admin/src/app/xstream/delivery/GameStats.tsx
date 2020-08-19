@@ -12,10 +12,12 @@ export const GameStats = () => {
   const [aids, setAids] = React.useState<IAid[] | null>(null);
 
   React.useEffect(() => {
-    fetch("http://localhost:4040/aids")
-      .then(res => res.json())
-      .then(setAids)
-      .catch(console.error);
+    if (deliverySession?.user?.username) {
+      fetch(`http://localhost:4040/users/${deliverySession.user.username}/aids`)
+        .then(res => res.json())
+        .then(setAids)
+        .catch(console.error);
+    }
   }, [deliverySession?.user?.username]);
 
   if (deliverySession.error) {

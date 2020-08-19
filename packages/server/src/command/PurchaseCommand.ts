@@ -37,6 +37,10 @@ export class PurchaseCommand implements ICommand {
             user.username,
             name
           );
+          this.twitchClient.say(
+            channel,
+            `${user.username} bought a ${purchasedVehicle.vehicle.name}`
+          );
           this.io.emit("purchased-vehicle", {
             vehicle: purchasedVehicle
           });
@@ -48,6 +52,10 @@ export class PurchaseCommand implements ICommand {
             user.username,
             name
           );
+          this.twitchClient.say(
+            channel,
+            `${user.username} bought a ${purchasedPew.pew.name}`
+          );
           this.io.emit("purchased-pew", {
             pew: purchasedPew
           });
@@ -58,6 +66,10 @@ export class PurchaseCommand implements ICommand {
           const purchasedAid = await this.userService.purchaseAid(
             user.username,
             name
+          );
+          this.twitchClient.say(
+            channel,
+            `${user.username} bought a ${purchasedAid.aid.name}`
           );
           this.io.emit("purchased-aid", {
             aid: purchasedAid

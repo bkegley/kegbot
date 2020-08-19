@@ -4,6 +4,7 @@ import { UserVehicle } from "./UserVehicle";
 import { UserPew } from "./UserPew";
 import { PewSuggestion } from "./PewSuggestion";
 import { OrderSuggestion } from "./OrderSuggestion";
+import { UserAid } from "./UserAid";
 
 @Entity()
 export class User {
@@ -24,6 +25,9 @@ export class User {
 
   @OneToMany(type => UserPew, userPew => userPew.user)
   pews!: UserPew[];
+
+  @OneToMany(type => UserAid, userAid => userAid.user)
+  aids!: UserAid[];
 
   @OneToMany(type => PewSuggestion, pewSuggestion => pewSuggestion.user)
   pewSuggestions!: PewSuggestion[];

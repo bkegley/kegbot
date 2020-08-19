@@ -33,6 +33,7 @@ import { AidGetByIdRouteHandler } from "./handler/AidGetById";
 import { AidCreateRouteHandler } from "./handler/AidCreate";
 import { AidUpdateByIdRouteHandler } from "./handler/AidUpdateById";
 import { AidDeleteRouteHandler } from "./handler/AidDelete";
+import { ListUserAidsByUsernameRouteHandler } from "./handler/ListUserAidsByUsername";
 
 export class RouteModule extends BaseModule {
   init() {
@@ -55,6 +56,14 @@ export class RouteModule extends BaseModule {
       (req: Request<{ username: string }>, res) =>
         new ListUserVehiclesByUsernameRouteHandler(
           this.container.resolve(TYPES.VehicleService)
+        ).handle(req, res)
+    );
+
+    app.get(
+      "/users/:username/aids",
+      (req: Request<{ username: string }>, res) =>
+        new ListUserAidsByUsernameRouteHandler(
+          this.container.resolve(TYPES.AidService)
         ).handle(req, res)
     );
 

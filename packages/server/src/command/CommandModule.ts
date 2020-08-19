@@ -16,7 +16,7 @@ import { PewDoCommand } from "./PewDoCommand";
 import { OrderCommand } from "./OrderCommand";
 import { PewClueCommand } from "./PewClueCommand";
 import { ChoosePeruseCommand } from "./ChoosePeruse";
-import { PewViewCommand } from "./PiewView";
+import { PewViewCommand } from "./PewView";
 import { ListCommand } from "./ListCommand";
 import { PlayAidCommand } from "./PlayAid";
 
@@ -39,9 +39,10 @@ export class CommandModule extends BaseModule implements IModule {
     this.aliasRegistry.set("!pp", "!pewpew");
     this.aliasRegistry.set("!help", "!pewclue");
     this.aliasRegistry.set("!cc", "!choosecruise");
-    this.aliasRegistry.set("!cruisechoose", "!choosecruise");
     this.aliasRegistry.set("!give", "!pewaccrue");
+    this.aliasRegistry.set("!cruisechoose", "!choosecruise");
     this.aliasRegistry.set("!pewsspew", "!pewaccrue");
+    this.aliasRegistry.set("!buy", "!purchase");
 
     this.commandRegistry.set(
       "!hi",
@@ -139,6 +140,7 @@ export class CommandModule extends BaseModule implements IModule {
       () =>
         new GiveCommand(
           this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.TwitchClient),
           this.container.resolve(TYPES.UserService)
         )
     );

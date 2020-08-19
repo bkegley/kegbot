@@ -41,6 +41,8 @@ export class UserService extends BaseService implements IUserService {
       .leftJoinAndSelect("vehicles.vehicle", "vehicle")
       .leftJoinAndSelect("user.pews", "pews")
       .leftJoinAndSelect("pews.pew", "pew")
+      .leftJoinAndSelect("user.aids", "aids")
+      .leftJoinAndSelect("aids.aid", "aid")
       .getOne();
   }
 
@@ -64,7 +66,7 @@ export class UserService extends BaseService implements IUserService {
   }
 
   public async give(username: string, amount: number) {
-    const user = await this.getByUsername(username);
+    const user = await this.findOrCreateUser(username);
     if (!user) {
       throw new Error("Not a valid user");
     }

@@ -12,7 +12,8 @@ import { Container } from "./utils/Container";
 import {
   ServiceRegistry,
   IGameService,
-  IDeliverySessionService
+  IDeliverySessionService,
+  IUserService
 } from "./service";
 import { RouteModule } from "./route";
 import { Application } from "express";
@@ -73,8 +74,22 @@ class Server {
     const twitchClient = client(options);
     this.container.bind<Client>(TYPES.TwitchClient, twitchClient);
 
-    twitchClient.on("message", (channel, user, message, self) => {
+    twitchClient.on("message", async (channel, user, message, self) => {
       this.io.emit("message", message);
+      const userService = this.container.resolve<IUserService>(
+        TYPES.UserService
+      );
+
+      if (user.username) {
+        userService.give(user.username, 5);
+      }
+
+      if (
+        user.username === "bjkegley" &&
+        message.startsWith(`Congrats! We'll punch `)
+      ) {
+        await userService.give(message.split("**")[1], 1000);
+      }
       if (message[0] === "!") {
         this.container
           .resolve<CommandHandler>(TYPES.CommandHandler)
