@@ -1,14 +1,22 @@
 import React from "react";
 import { useDeliverySession } from "../../../hooks/useDeliverySession";
-import { IDeliverySession } from "../../../interfaces";
 import {
   IState,
   GameWinType,
   GameOverType
 } from "../../../hooks/DeliverySessionProvider";
+import { IAid } from "../../../interfaces";
 
 export const GameStats = () => {
   const { deliverySession } = useDeliverySession();
+  const [aids, setAids] = React.useState<IAid[] | null>(null);
+
+  React.useEffect(() => {
+    fetch("http://localhost:4040/aids")
+      .then(res => res.json())
+      .then(setAids)
+      .catch(console.error);
+  }, [deliverySession?.user?.username]);
 
   if (deliverySession.error) {
     return (
@@ -31,7 +39,7 @@ export const GameStats = () => {
   const minutes = Math.floor(gameTime / 60000);
 
   return (
-    <div>
+    <div className="w-1/2">
       <li className="flex flex-col justify-between overflow-hidden bg-white rounded-lg shadow col-span-1">
         <div className="w-full p-6">
           <div className="w-full text-6xl text-center">
@@ -42,35 +50,40 @@ export const GameStats = () => {
               {user.username} is driving {vehicle.name}
             </h3>
           </div>
-          <div className="mt-4 grid grid-cols-3 space-x-4">
-            <div className="flex flex-col sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500 leading-5">
-                Health
-              </dt>
-
-              <div className="flex flex-col">
-                <dd className="relative w-full h-6 mt-1 text-sm text-gray-900 bg-red-600 leading-5">
-                  <div
-                    className="absolute top-0 left-0 h-full bg-green-600"
-                    style={{
-                      width: `${(vehicle.health / vehicle.baseHealth) * 100}%`
-                    }}
-                  />
-                </dd>
-                <div className="flex justify-between text-sm text-gray-700">
-                  <p>{vehicle.health}</p>
-                  <p>/</p>
-                  <p>{vehicle.baseHealth}</p>
+          <div className="flex space-x-10">
+            <div className="flex-1 mt-4">
+              <div>
+                <dt className="text-gray-500 leading-5">Health</dt>
+                <div>
+                  <dd className="relative w-full h-6 mt-1 text-sm text-gray-900 bg-red-600 leading-5">
+                    <div
+                      className="absolute top-0 left-0 h-full bg-green-600"
+                      style={{
+                        width: `${(vehicle.health / vehicle.baseHealth) * 100}%`
+                      }}
+                    />
+                  </dd>
+                  <div className="flex justify-center text-sm text-gray-700 space-x-4">
+                    <p>{vehicle.health}</p>
+                    <p>/</p>
+                    <p>{vehicle.baseHealth}</p>
+                  </div>
                 </div>
               </div>
+              <div>
+                <dt className="text-gray-500 leading-5">Speed</dt>
+                <dd className="mt-1 text-sm text-gray-900 leading-5">
+                  {vehicle.speed}
+                </dd>
+              </div>
             </div>
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500 leading-5">
-                Speed
-              </dt>
-              <dd className="mt-1 text-sm text-gray-900 leading-5">
-                {vehicle.speed}
-              </dd>
+            <div className="flex-1 mt-4">
+              <h2 className="text-gray-500 leading-5">
+                Available Aids (!playaid aidName)
+              </h2>
+              {aids.slice(0, 4).map(aid => {
+                return <div key={aid.id}>{aid.name}</div>;
+              })}
             </div>
           </div>
         </div>
