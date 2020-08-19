@@ -189,7 +189,7 @@ const reducer = (state: IState, action: IAction) => {
         ...state,
         vehicle: {
           ...state.vehicle,
-          speed: newSpeed,
+          speed: newSpeed < 0 ? 0 : newSpeed,
           health:
             newHealth > state.vehicle.baseHealth
               ? state.vehicle.baseHealth

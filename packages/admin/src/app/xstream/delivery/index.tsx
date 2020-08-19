@@ -6,6 +6,7 @@ import { VehicleSelection } from "./VehicleSelection";
 import { PewQueue } from "./PewQueue";
 import { PewClue } from "./PewClue";
 import { Phone } from "./Phone";
+import { AidPlayed } from "./AidPlayed";
 
 export const XStreamDelivery = () => {
   return (
@@ -22,6 +23,9 @@ export const XStreamDelivery = () => {
       <div className="flex flex-col items-center justify-center min-h-screen">
         <GameStats />
         <VehicleSelection />
+      </div>
+      <div className="absolute bottom-0 left-0 pb-40 pl-20">
+        <AidPlayed />
       </div>
       <div className="absolute bottom-0 left-0 right-0 px-32 pb-10">
         <DeliveryRoute />
