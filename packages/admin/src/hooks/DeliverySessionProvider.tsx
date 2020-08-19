@@ -47,7 +47,8 @@ type IAction =
     }
   | { type: ActionType.PEW_PEWED; payload: IUserPew }
   | { type: ActionType.SPEED_RESTORED; payload: number }
-  | { type: ActionType.AID_PLAYED; payload: IUserAid };
+  | { type: ActionType.AID_PLAYED; payload: IUserAid }
+  | { type: ActionType.ERROR; payload: { message: string } };
 
 enum ActionType {
   DELIVERY_SESSION_CREATED = "DELIVERY_SESSION_CREATED",
@@ -59,7 +60,8 @@ enum ActionType {
   VEHICLE_SELECTED = "VEHICLE_SELECTED",
   PEW_PEWED = "PEW_PEWED",
   SPEED_RESTORED = "SPEED_RESTORED",
-  AID_PLAYED = "AID_PLAYED"
+  AID_PLAYED = "AID_PLAYED",
+  ERROR = "ERROR"
 }
 
 export enum GameOverType {
@@ -78,6 +80,7 @@ export interface IState {
   distance: number;
   gameTime: number;
   reward: number;
+  error: any | null;
   user: IUser;
   sessionResult: GameWinType | GameOverType | null;
   vehicle: {
@@ -132,6 +135,7 @@ const reducer = (state: IState, action: IAction) => {
       return {
         ...state,
         ...action.payload,
+        error: null,
         gameTime: action.payload.duration
       };
     }
@@ -193,6 +197,12 @@ const reducer = (state: IState, action: IAction) => {
         }
       };
     }
+    case ActionType.ERROR: {
+      return {
+        ...initialState,
+        error: action.payload.message
+      };
+    }
     default: {
       return state;
     }
@@ -208,7 +218,8 @@ const initialState: IState = {
   isActive: false,
   user: null,
   vehicle: null,
-  sessionResult: null
+  sessionResult: null,
+  error: null
 };
 
 const gameTick = 1000;
@@ -327,6 +338,17 @@ export const DeliverySessionProvider = ({
       });
     };
     socket.on("delivery-session-created", deliverySessionCreatedHandler);
+
+    const deliverySessionNoVehiclesHandler = (user: IUser) => {
+      dispatch({
+        type: ActionType.ERROR,
+        payload: {
+          message: `${user.username} has no vehicles`
+        }
+      });
+    };
+
+    socket.on("delivery-session-no-vehicles", deliverySessionNoVehiclesHandler);
 
     const cruiseChoosedHandler = (userVehicle: IUserVehicle) => {
       dispatch({ type: ActionType.GAME_START, payload: null });

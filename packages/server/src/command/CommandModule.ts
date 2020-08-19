@@ -80,6 +80,7 @@ export class CommandModule extends BaseModule implements IModule {
       "!answer",
       () =>
         new AnswerCommand(
+          this.container.resolve(TYPES.TwitchClient),
           this.container.resolve(TYPES.PhoneService),
           this.container.resolve(TYPES.DeliverySessionService)
         )

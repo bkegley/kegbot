@@ -10,6 +10,12 @@ import {
 export const GameStats = () => {
   const { deliverySession } = useDeliverySession();
 
+  if (deliverySession.error) {
+    return (
+      <div className="p-6 bg-white rounded shadow">{deliverySession.error}</div>
+    );
+  }
+
   if (!deliverySession?.vehicle && !deliverySession.sessionResult) return null;
 
   const { vehicle, gameTime, user, sessionResult } = deliverySession;

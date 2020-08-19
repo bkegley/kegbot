@@ -25,7 +25,13 @@ export class DeliverySessionService extends BaseService
 
   async createForUser(username: string) {
     const user = await this.userService.findOrCreateUser(username);
+
     if (user) {
+      if (!user.vehicles.length) {
+        this.io.emit("delivery-session-no-vehicles", user);
+        return null;
+      }
+
       const game = await this.gameService.getGame();
 
       if (!game) {
