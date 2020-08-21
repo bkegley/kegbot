@@ -63,7 +63,7 @@ export class CommandService extends BaseService implements ICommandService {
         .getOne(),
       this.manager
         .createQueryBuilder(CommandAlias, "commandAlias")
-        .where("alias IN (:...aliases)", { aliases })
+        .where("commandAlias.command = :id", { id })
         .getMany()
     ]);
 
@@ -111,11 +111,12 @@ export class CommandService extends BaseService implements ICommandService {
     );
 
     if (toDelete.length) {
+      const aliases = toDelete.map(alias => alias.alias);
       await this.manager
         .createQueryBuilder(CommandAlias, "commandAlias")
         .delete()
-        .where("alias IN (:aliases)", {
-          aliases: toDelete.map(alias => alias.alias)
+        .where("alias IN (:...aliases)", {
+          aliases
         })
         .execute();
     }
