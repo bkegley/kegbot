@@ -19,6 +19,9 @@ export class DeliverySession {
   @Column({ default: 250 })
   reward!: number;
 
+  @Column({ default: 3 })
+  queueTimer!: number;
+
   @Column({ default: 100000 })
   distance!: number;
 

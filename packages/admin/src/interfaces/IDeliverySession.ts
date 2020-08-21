@@ -6,6 +6,7 @@ export interface IDeliverySession {
   duration: number;
   reward: number;
   distance: number;
+  queueTimer: number;
   user: IUser;
   userVehicle: IUserVehicle;
 }
