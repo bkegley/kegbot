@@ -9,3 +9,12 @@ COPY ./packages/admin/package.json ./packages/sdcerver/package.json
 RUN yarn
 
 COPY ./packages/server ./packages/server
+
+FROM node:12-alpine3.12
+WORKDIR /app
+
+COPY --from=install /app .
+
+RUN yarn workspace @kegbot/server run build
+
+CMD yarn workspace @kegbot/server run start
