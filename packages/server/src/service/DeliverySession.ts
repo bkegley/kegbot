@@ -59,6 +59,8 @@ export class DeliverySessionService extends BaseService
         distance * (Math.random() + 0.65) * 10
       );
 
+      deliverySession.queueTimer = Math.floor(Math.random() * (5 - 1) + 1);
+
       await this.manager
         .save(deliverySession)
         .catch(err => console.log({ err }));

@@ -26,7 +26,7 @@ type IAction =
       type: ActionType.DELIVERY_SESSION_CREATED;
       payload: Pick<
         IDeliverySession,
-        "id" | "reward" | "duration" | "user" | "distance"
+        "id" | "reward" | "duration" | "user" | "distance" | "queueTimer"
       >;
     }
   | { type: ActionType.GAME_TICK; payload: number }
@@ -79,6 +79,7 @@ export interface IState {
   duration: number;
   distance: number;
   gameTime: number;
+  queueTimer: number;
   reward: number;
   error: any | null;
   user: IUser;
@@ -335,6 +336,7 @@ export const DeliverySessionProvider = ({
           reward: deliverySession.reward,
           duration: deliverySession.duration,
           distance: deliverySession.distance,
+          queueTimer: deliverySession.queueTimer * 1000,
           user: deliverySession.user
         }
       });

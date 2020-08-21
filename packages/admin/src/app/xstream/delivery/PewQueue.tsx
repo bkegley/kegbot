@@ -7,14 +7,12 @@ import { useDeliverySession } from "../../../hooks/useDeliverySession";
 
 export const PewQueue = () => {
   const socket = useSocket();
-  const { pewPew } = useDeliverySession();
+  const { pewPew, deliverySession } = useDeliverySession();
   const [pews, setPews] = React.useState<IUserPew[]>([]);
   const [pewPewed, setPewPewed] = React.useState<IUserPew | null>(null);
   const [pewPewedTimeout, setPewPewedTimeout] = React.useState<ReturnType<
     typeof setTimeout
   > | null>(null);
-
-  const timeoutDelay = 3000;
 
   React.useEffect(() => {
     let isCurrent = true;
@@ -83,7 +81,7 @@ export const PewQueue = () => {
                   setPewPewed(pew);
                   pewPew(pew);
                 }}
-                timeoutDelay={timeoutDelay}
+                timeoutDelay={deliverySession.queueTimer ?? 3000}
               />
             );
           })}
