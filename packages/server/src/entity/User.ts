@@ -14,6 +14,9 @@ export class User {
   @Column({ default: "" })
   greeting!: string;
 
+  @Column({ default: "" })
+  email!: string;
+
   @Column({ default: 0 })
   kegerrands!: number;
 

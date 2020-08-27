@@ -53,6 +53,13 @@ export class UserService extends BaseService implements IUserService {
     return user;
   }
 
+  public async saveUserGitHubEmail(username: string, email: string) {
+    const user = await this.findOrCreateUser(username);
+    user.email = email;
+    await this.manager.save(user);
+    return user;
+  }
+
   public async findOrCreateUser(username: string) {
     const user = await this.getByUsername(username);
     if (user) {
