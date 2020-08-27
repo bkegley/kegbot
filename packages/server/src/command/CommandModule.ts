@@ -3,6 +3,7 @@ import { TYPES } from "../abstract";
 import { CommandHandler } from "./CommandHandler";
 import { ICommand } from "./ICommand";
 import { HiCommand } from "./HiCommand";
+import { GitHubCommand } from "./GitHubCommand";
 import { ByeCommand } from "./ByeCommand";
 import { IModule } from "../utils/IModule";
 import { ShoutoutCommand } from "./ShoutoutCommand";
@@ -36,6 +37,7 @@ export class CommandModule extends BaseModule implements IModule {
         )
     );
 
+    this.aliasRegistry.set("!gh", "!github");
     this.aliasRegistry.set("!pp", "!pewpew");
     this.aliasRegistry.set("!help", "!pewclue");
     this.aliasRegistry.set("!cc", "!choosecruise");
@@ -49,6 +51,16 @@ export class CommandModule extends BaseModule implements IModule {
       () =>
         new HiCommand(
           this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.UserService)
+        )
+    );
+
+    this.commandRegistry.set(
+      "!github",
+      () =>
+        new GitHubCommand(
+          this.container.resolve(TYPES.IOServer),
+          this.container.resolve(TYPES.TwitchClient),
           this.container.resolve(TYPES.UserService)
         )
     );

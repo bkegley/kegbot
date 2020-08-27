@@ -8,6 +8,7 @@ export interface IUserService {
   getByUsername(username: string): Promise<User | undefined>;
   findOrCreateUser(username: string): Promise<User>;
   saveUserGreeting(username: string, greeting: string): Promise<User>;
+  saveUserGitHubEmail(username: string, email: string): Promise<User>;
   give(username: string, amount: number): Promise<User>;
   purchaseVehicle(username: string, vehicleName: string): Promise<UserVehicle>;
   getUserVehicle(
