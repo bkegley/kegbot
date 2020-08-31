@@ -42,6 +42,7 @@ export const CommandUpdatePage = ({ commandId }: CommandUpdatePage) => {
           <div className="p-6 bg-white rounded shadow">
             <CommandUpdateForm
               command={command}
+              onDeleteSuccess={() => history.push("/admin/commands")}
               onUpdateSuccess={data =>
                 history.push(`${match.url.replace("/update", "")}/${data.id}`)
               }
