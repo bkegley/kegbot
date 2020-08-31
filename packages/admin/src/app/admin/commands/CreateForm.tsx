@@ -9,6 +9,12 @@ export interface CommandCreateFormProps {
   onCancel?: () => void;
 }
 
+const initialValues: Omit<ICommand, "aliases"> = {
+  command: "",
+  response: "",
+  modOnly: false
+};
+
 export const CommandCreateForm = ({
   onCreateSuccess,
   onCreateError,
@@ -16,12 +22,7 @@ export const CommandCreateForm = ({
 }: CommandCreateFormProps) => {
   return (
     <Formik
-      initialValues={{
-        command: "",
-        response: "",
-        aliases: "",
-        modOnly: false
-      }}
+      initialValues={initialValues}
       onSubmit={(values, { setSubmitting }) => {
         fetch("http://localhost:4040/commands/", {
           method: "POST",
@@ -54,10 +55,6 @@ export const CommandCreateForm = ({
               <div>
                 <Label htmlFor="response">Response</Label>
                 <Field as={TextArea} id="response" name="response" />
-              </div>
-              <div>
-                <Label htmlFor="aliases">Aliases</Label>
-                <Field as={Input} type="text" id="aliases" name="aliases" />
               </div>
               <div>
                 <Label htmlFor="modOnly">Mod Only?</Label>

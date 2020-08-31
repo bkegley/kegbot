@@ -59,7 +59,6 @@ export const CommandUpdateForm = ({
       }}
     >
       {({ values, setFieldValue }) => {
-        console.log({ values });
         return (
           <Form>
             <div className="space-y-4">
